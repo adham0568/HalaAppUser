@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1082365643973",
+    "project_id": "halaapp-e14dc",
+    "storage_bucket": "halaapp-e14dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1082365643973:android:83fbf461867d68844c34ac",
+        "android_client_info": {
+          "package_name": "com.example.halaapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUncJ88IK45zqMV9bEkYZBO0G_kvdHdaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
