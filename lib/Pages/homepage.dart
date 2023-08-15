@@ -78,7 +78,6 @@ bool DataGett1=false;
       Scaffold(
           appBar: AppBar(
             leading: IconButton(onPressed: () async {
-              //signOut();
               Navigator.push(context, MaterialPageRoute(builder: (context) => const AccountPage(),));
             },icon: const Icon(Icons.account_circle,color: Colors.white,)),
             title: Image.asset('assets/Img/logowelcome.png'),

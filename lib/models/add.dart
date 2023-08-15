@@ -15,6 +15,7 @@ class AddToCartWidget extends StatefulWidget {
   @override
   State<AddToCartWidget> createState() => _AddToCartWidgetState();
 }
+bool add = false;
 
 class _AddToCartWidgetState extends State<AddToCartWidget> {
   @override
@@ -37,7 +38,6 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
   }
 
   Item? myItems;
-  bool add = false;
   double _width = 50;
   double _height = 20;
 
