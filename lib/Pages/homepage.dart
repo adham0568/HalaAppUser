@@ -391,19 +391,6 @@ bool DataGett1=false;
                 ),//اختصارات
                 const SizedBox(
                   height: 100,
-                 /* child: ListView.builder(
-                    itemCount: ListOfProductskho.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return  Container(
-                        margin: EdgeInsets.only(right: 9,left: 9),
-                        decoration: BoxDecoration(color: Colors.black26,borderRadius: BorderRadius.circular(12)),
-                        height: 340,
-                        child: ClipRRect(borderRadius: BorderRadius.circular(12),child: Image.asset('${ListOfProductskho[index].Image}',height: 100,width: 100,)),
-                      );
-                    },
-
-                  ),*/
                 ),/*القسم الرابع*/
               ],
             ),

@@ -6,23 +6,17 @@ import 'package:halaapp/provider/TotalPrudact.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/CartProvider.dart';
-
-
-
-int NumPrudact=0;
-
-
-
 class AddToCartWidget extends StatefulWidget {
+  final double SizeIcon;
+  final Color ColorIcon;
   final Map Prudact; //استلام تفاصيل المنتج الذي يتم اضافته من صفحة prudactDesgine
-  const AddToCartWidget({Key? key, required this.Prudact}) : super(key: key);
+  AddToCartWidget({required this.ColorIcon,required this.SizeIcon,Key? key, required this.Prudact}) : super(key: key);
 
   @override
   State<AddToCartWidget> createState() => _AddToCartWidgetState();
 }
 
 class _AddToCartWidgetState extends State<AddToCartWidget> {
-
   @override
   void initState() {
     myItems = Item(
@@ -146,7 +140,7 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                             });});
                           });
                         },
-                        icon: const Icon(
+                        icon:const Icon(
                           Icons.add,
                           color: Colors.teal,
                         )),
@@ -180,12 +174,14 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                       ? Colors.tealAccent
                       : Colors.white70,
                   borderRadius: BorderRadius.circular(5)),
-              height: 30,
-              width: 30,
-              child: const Icon(
-                Icons.add,
-                color: Colors.teal,
-                weight: 10,
+              height: widget.SizeIcon+5,
+              width:  widget.SizeIcon+5,
+              child:Center(
+                child: Icon(
+                  Icons.add,
+                  color: widget.ColorIcon,
+                  size: widget.SizeIcon,
+                ),
               )),
     );
   }

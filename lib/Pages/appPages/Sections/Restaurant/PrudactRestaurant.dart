@@ -108,7 +108,7 @@ class GridViewRust extends StatelessWidget {
                                               bottom: 2,
                                               left: 25,
                                               child:Container(decoration: BoxDecoration(color:Colors.black54,borderRadius: BorderRadius.circular(5)),
-                                                  child:snapshot.data!.docs[index]['TybePrudact']<1? AddToCartWidget(Prudact:snapshot.data.docs[index].data(),):
+                                                  child:snapshot.data!.docs[index]['TybePrudact']<1? AddToCartWidget(Prudact:snapshot.data.docs[index].data(),ColorIcon: Colors.teal,SizeIcon: 30,):
                                                   AddToCartResturant(Prudact:snapshot.data.docs[index].data()),
                                               )
                                           )

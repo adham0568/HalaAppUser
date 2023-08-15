@@ -208,7 +208,9 @@ class _SearchPageState extends State<SearchPage> {
                                                     bottom: 2,
                                                     left: 25,
                                                     child:Container(decoration: BoxDecoration(color:Colors.black54,borderRadius: BorderRadius.circular(5)),
-                                                        child: AddToCartWidget(Prudact:snapshot.data!.docs[index].data()! as Map,))
+                                                        child: AddToCartWidget(Prudact:snapshot.data!.docs[index].data()! as Map,
+                                                        ColorIcon: Colors.pink,SizeIcon: 30,
+                                                        ))
                                                 )
                                               ],
                                             ),
