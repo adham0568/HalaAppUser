@@ -4,22 +4,10 @@ import '../models/Item.dart';
 class CartProvider with ChangeNotifier {
   List<Item> Products = [];
   String xid1 = '000';
-  //String get xid => xid1;
 
-
- /* void updateXID(String newXID) {
-    xid1 = newXID;
-    notifyListeners();
-  }*/
-
-  int price = 0;
   final int _ItemsCount = 0;
-  List IdPrudacts=[];
   int NumOfPrudact=0;
-
-
-
-
+  List IdPrudacts=[];
   addPrudact({required Item item}){
     IdPrudacts.add(item.IdPrudact);
   }
@@ -32,18 +20,13 @@ class CartProvider with ChangeNotifier {
   AddToCart({required Item item}) {
     if(Products.isNotEmpty){
       if(Products.first.IdMarket==item.IdMarket)
-      {Products.add(item);
-      price += item.Prise;
-      }
+      {Products.add(item);}
       else{Products.clear();
-        price=0;
         Products.add(item);
-      price+= item.Prise;
       }
     }
    else if(Products.isEmpty){
       Products.add(item);
-      price += item.Prise;
     }
   }
 
@@ -51,7 +34,6 @@ class CartProvider with ChangeNotifier {
     for (int i = 0; i < Products.length; i++) {
       if (Products[i].IdPrudact == idToDelete) {
         Products.removeAt(i);
-        price -= item.Prise;
         break;
       }
     }
@@ -59,21 +41,38 @@ class CartProvider with ChangeNotifier {
 
   List<Item> listitem() {
     List<Item> result = [];
-    Set<int> seenIds = <int>{};
+    Map<int, List<Item>> productsMap = {};
+
     for (Item item in Products) {
-      if (!seenIds.contains(item.IdPrudact)) {
-        result.add(item);
-        seenIds.add(item.IdPrudact);
+      if (!productsMap.containsKey(item.IdPrudact)) {
+        productsMap[item.IdPrudact] = [item];
+      } else {
+        List<Item> existingItems = productsMap[item.IdPrudact]!;
+        bool shouldAdd = true;
+
+        for (Item existingItem in existingItems) {
+          if (existingItem.OpitionSelected == item.OpitionSelected) {
+            shouldAdd = false;
+            break;
+          }
+        }
+
+        if (shouldAdd) {
+          existingItems.add(item);
+        }
       }
     }
+
+    productsMap.values.forEach((items) => result.addAll(items));
 
     return result;
   }
 
+
   GetNumberByProducts(Item item) {
     int Numproducts = 0;
     for (int i = 0; i < Products.length; i++) {
-      if (Products[i].IdPrudact == item.IdPrudact) {
+      if (Products[i].IdPrudact == item.IdPrudact && Products[i].OpitionSelected==item.OpitionSelected) {
         Numproducts++;
       }
     }
@@ -82,8 +81,16 @@ class CartProvider with ChangeNotifier {
   Clear(){
     Products.clear();
     listitem().clear();
-    price=0;
     notifyListeners();
+  }
+
+  int PirseCalculating(){
+    int Prise=0;
+    for(int i=0;i<Products.length;i++){
+      int _prise=Products[i].Prise;
+      Prise+=_prise;
+    }
+    return Prise;
   }
 }
 //

@@ -1,17 +1,8 @@
 
 class Item{
-  String Name;
-  String IdCollection;
-  String IdMainCollection;
-  int IdPrudact;
-  String ImageUrl;
-  String PrudactsDetals;
-  int Prise;
-  int Discount;
-  String IdMarket;
-  List Opitions;
-  int TybePrudact;
-
+  String Name,IdCollection,IdMainCollection,ImageUrl,PrudactsDetals,IdMarket;
+  int Discount,Prise,IdPrudact,TybePrudact;
+  List Opitions,OpitionSelected;
   Item(
       {required this.IdMarket,
       required this.Name,
@@ -23,7 +14,8 @@ class Item{
       required this.Prise,
       required this.Discount,
       required this.Opitions,
-      required this.TybePrudact});
+      required this.TybePrudact,
+      required this.OpitionSelected});
 
   Map<String, dynamic> Convert2Map(){
     return {

@@ -32,6 +32,7 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
         Prise: widget.Prudact['Prise']-widget.Prudact['Discount'],
         TybePrudact:widget.Prudact['TybePrudact'] ,
         Opitions: widget.Prudact['Opitions'],
+        OpitionSelected: [],
     );
     // TODO: implement initState
     super.initState();

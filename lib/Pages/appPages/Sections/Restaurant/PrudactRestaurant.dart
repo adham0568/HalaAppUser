@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:halaapp/models/AddPrudactHaveDetales.dart';
+import 'package:halaapp/Pages/appPages/Sections/Restaurant/AddPrudactToCart.dart';
 
 import '../../../../models/add.dart';
 import '../detalspage.dart';
@@ -109,7 +109,25 @@ class GridViewRust extends StatelessWidget {
                                               left: 25,
                                               child:Container(decoration: BoxDecoration(color:Colors.black54,borderRadius: BorderRadius.circular(5)),
                                                   child:snapshot.data!.docs[index]['TybePrudact']<1? AddToCartWidget(Prudact:snapshot.data.docs[index].data(),ColorIcon: Colors.teal,SizeIcon: 30,):
-                                                  AddToCartResturant(Prudact:snapshot.data.docs[index].data()),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddToCartResturant1(Prudact1: snapshot.data.docs[index].data())));
+                                                    },
+                                                    child: Container(
+                                                      padding: const EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+                                                          gradient: const LinearGradient(
+                                                              begin: Alignment.centerLeft,
+                                                              end: Alignment.centerRight,
+                                                              colors: [
+                                                                Color.fromRGBO(56, 95, 172, 180),
+                                                                Color.fromRGBO(1, 183, 168, 180)
+                                                              ]
+                                                          )
+                                                      ),
+                                                      child: const Text("إضافة",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white),),
+                                                    ),
+                                                  ),
                                               )
                                           )
                                         ],

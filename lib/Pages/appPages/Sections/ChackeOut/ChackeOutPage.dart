@@ -104,7 +104,7 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
 
       String totalPrice = '$_TotalPrise ₪'; // قم بتعيين السعر الإجمالي الخاص بك هنا
       setState(() {
-        Provaider.price>100?_TotalPrise= Provaider.price + 0 - Discount!:_TotalPrise= Provaider.price + 7 - Discount!;
+        Provaider. PirseCalculating()>100?_TotalPrise= Provaider. PirseCalculating() + 0 - Discount!:_TotalPrise= Provaider. PirseCalculating() + 7 - Discount!;
       });
       Map<String, dynamic> orderData = {
         'orderID': IdOrdar, // قم بتعيين الـ ID الخاص بالطلب هنا
@@ -329,7 +329,7 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${Provaider.price} ₪',
+                        '${Provaider. PirseCalculating()} ₪',
                         style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 20),
                       ),
@@ -344,7 +344,7 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        Provaider.price>100?'0 ₪':'7 ₪',
+                        Provaider. PirseCalculating()>100?'0 ₪':'7 ₪',
                         style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 20),
                       ),
@@ -389,7 +389,7 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${Provaider.price>100?Provaider.price + 0 - Discount!:Provaider.price + 7 - Discount!} ₪',
+                        '${Provaider. PirseCalculating()>100?Provaider. PirseCalculating() + 0 - Discount!:Provaider. PirseCalculating() + 7 - Discount!} ₪',
                         style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 20),
                       ),
@@ -410,7 +410,7 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
               onTap: () async {
                await sendListToFirestore();
                 setState(() {
-                  Provaider.price>100?_TotalPrise= Provaider.price + 0 - Discount! :_TotalPrise= Provaider.price + 7 - Discount!;
+                  Provaider. PirseCalculating()>100?_TotalPrise= Provaider. PirseCalculating() + 0 - Discount! :_TotalPrise= Provaider. PirseCalculating() + 7 - Discount!;
                 });
              await  Provaider.Clear();
                ProvaiderTotalPrudact.Clear();

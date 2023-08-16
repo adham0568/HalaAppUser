@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:halaapp/Pages/appPages/Sections/ChackeOut/ChackeOutPage.dart';
+import 'package:halaapp/models/HIGHT.dart';
 import 'package:provider/provider.dart';
 import '../../../provider/CartProvider.dart';
 import '../../../provider/TotalPrudact.dart';
@@ -18,12 +19,11 @@ class _CartPageState extends State<CartPage> {
     // TODO: implement initState
     super.initState();
   }
-
+  SizeFix SizeQ=SizeFix();
   @override
   Widget build(BuildContext context) {
     final Provaider = Provider.of<CartProvider>(context);
     final Provaider1 = Provider.of<total>(context);
-
     final cartItems = Provaider.listitem();
     return Scaffold(
       appBar: AppBar(
@@ -59,93 +59,122 @@ class _CartPageState extends State<CartPage> {
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
-                          Container(
-                            margin: const EdgeInsets.all(9),
-                            height: 70,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                gradient: const LinearGradient(
-                                    begin: Alignment.topRight,
-                                    end: Alignment.bottomLeft,
-                                    colors: [
-                                      Color.fromRGBO(0, 123, 142, 1),
-                                      Color.fromRGBO(9, 167, 82, 1),
-                                    ])),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                //Image.network('${_Provaider.listitem()[index]['ImageUrl']}',fit: BoxFit.cover,)
-                                Container(
-                                    height: 50,
-                                    width: 50,
-                                    margin: const EdgeInsets.only(left: 5),
-                                    decoration: BoxDecoration(
-                                        color: const Color.fromRGBO(193, 193, 193, 1),
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(12),
-                                        child:CachedNetworkImage(
-                                          imageUrl: Provaider.listitem()[index].ImageUrl,
-                                          placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
-                                          errorWidget: (context, url, error) => const Icon(Icons.error),
-                                        ),)),
-                                Text(
-                                  cartItems[index].Name,
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  '${cartItems[index].Prise * Provaider.GetNumberByProducts(Provaider.listitem()[index])}' '₪',
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(right: 9),
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Colors.white),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      InkWell(
-                                          onTap: () {
-                                            Provaider1.addNum();
-                                            setState(() {
-                                              Provaider.AddToCart(item: Provaider.listitem()[index]);
-                                            });
-                                          },
-                                          child: Icon(
-                                            Icons.add,
-                                            color: Colors.teal.shade300,
-                                            size: 40,
-                                          )),
-                                      Text(
-                                        Provaider.GetNumberByProducts(Provaider.listitem()[index]).toString(),
-                                        style: const TextStyle(fontSize: 20),
-                                      ),
-                                      InkWell(
-                                          onTap: () {
-                                            Provaider1.removeNum();
-                                            setState(() {
-                                              Provaider.RemoveToCart(Provaider.listitem()[index],Provaider.listitem()[index].IdPrudact);
-                                            });
-                                          },
-                                          child: Icon(
-                                            Icons.remove,
-                                            color: Colors.teal.shade300,
-                                            size: 40,
-                                          )),
-                                    ],
+                          InkWell(
+                            child: Container(
+                              margin: const EdgeInsets.all(9),
+                              padding: const EdgeInsets.symmetric(vertical: 25),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  gradient: const LinearGradient(
+                                      begin: Alignment.topRight,
+                                      end: Alignment.bottomLeft,
+                                      colors: [
+                                        Color.fromRGBO(0, 123, 142, 1),
+                                        Color.fromRGBO(9, 167, 82, 1),
+                                      ])),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      height: 50,
+                                      width: 50,
+                                      margin: const EdgeInsets.only(left: 5),
+                                      decoration: BoxDecoration(
+                                          color: const Color.fromRGBO(193, 193, 193, 1),
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(12),
+                                          child:CachedNetworkImage(
+                                            imageUrl: Provaider.listitem()[index].ImageUrl,
+                                            placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
+                                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                                          ),)),
+                                  cartItems[index].OpitionSelected.length>=1?
+                                      Column(
+                                        children: [
+                                          Text(
+                                            cartItems[index].Name,
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Container(
+                                            height: SizeQ.Hight(context: context)/10,
+                                            width: SizeQ.wight(context: context)/4,
+                                            child: ListView.builder(
+                                              physics: NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount:cartItems[index].OpitionSelected.length,
+                                              itemBuilder: (context, index1) => Align(
+                                              child: Text(
+                                                  cartItems[index].Opitions[index1]['subOptions'][cartItems[index].OpitionSelected[index1]]['optionName']
+                                                      ,style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w100),
+                                              ),
+                                            ),),
+                                          )
+                                        ],
+                                      )
+                                      :
+                                  Text(
+                                    cartItems[index].Name,
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    '${cartItems[index].Prise * Provaider.GetNumberByProducts(Provaider.listitem()[index])}' '₪',
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.pink,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(right: 9),
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: Colors.white),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        InkWell(
+                                            onTap: () {
+                                              Provaider1.addNum();
+                                              setState(() {
+                                                Provaider.AddToCart(item: Provaider.listitem()[index]);
+                                              });
+                                            },
+                                            child: Icon(
+                                              Icons.add,
+                                              color: Colors.teal.shade300,
+                                              size: 40,
+                                            )),
+                                        Text(
+                                          Provaider.GetNumberByProducts(Provaider.listitem()[index]).toString(),
+                                          style: const TextStyle(fontSize: 20),
+                                        ),
+                                        InkWell(
+                                            onTap: () {
+                                              Provaider1.removeNum();
+                                              setState(() {
+                                                Provaider.RemoveToCart(Provaider.listitem()[index],
+                                                    Provaider.listitem()[index].IdPrudact);
+                                              });
+                                            },
+                                            child: Icon(
+                                              Icons.remove,
+                                              color: Colors.teal.shade300,
+                                              size: 40,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           )
                         ],
@@ -190,7 +219,7 @@ class _CartPageState extends State<CartPage> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      '${Provaider.price.toString()} ₪',
+                                      '${Provaider. PirseCalculating().toString()} ₪',
                                       style: const TextStyle(
                                         fontSize: 40,
                                         color: Color.fromRGBO(0, 197, 185, 50),

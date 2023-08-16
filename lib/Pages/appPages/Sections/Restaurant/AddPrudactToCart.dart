@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:halaapp/models/CartProvider.dart';
 import 'package:halaapp/models/snack.dart';
 import 'package:provider/provider.dart';
 
@@ -17,15 +18,22 @@ class AddToCartResturant1 extends StatefulWidget {
   State<AddToCartResturant1> createState() => _AddToCartResturant1State();
 }
 List FinalPrise1=[];
-List Num=[];
+List<int> Number=[];
 bool ShowOpitions=true;
 int Count=0;
 int additionPrise=0;
 class _AddToCartResturant1State extends State<AddToCartResturant1> {
 
+  void ListOpitionNumber(){
+    int mainOptions = widget.Prudact1['Opitions'].length;
+    for(int i=0;i<mainOptions;i++){
+      Number= List.generate(mainOptions, (index) => 0);
+    }
+    print(Number);
+  }
+
   void createListPrice() {
     int mainOptions = widget.Prudact1['Opitions'].length;
-
     List<List<int>> num = [];
 
     for (int i = 0; i < mainOptions; i++) {
@@ -58,6 +66,7 @@ CalculatorPrise({required List Pri}){
   int FinalPrise=0;
   @override
   void initState() {
+    ListOpitionNumber();
     createListPrice();
     setState(() {
       myItems = Item(
@@ -72,6 +81,7 @@ CalculatorPrise({required List Pri}){
         Prise: widget.Prudact1['Prise']-widget.Prudact1['Discount'],
         TybePrudact:widget.Prudact1['TybePrudact'] ,
         Opitions: widget.Prudact1['Opitions'],
+        OpitionSelected: Number,
       );
     });
         super.initState();
@@ -113,6 +123,39 @@ CalculatorPrise({required List Pri}){
                           ),
                         ),
                       ),
+                      Positioned(
+                          top: 15,
+                          left: 15,
+                          child: CartWidget(h: w*0.1, w: w*0.1)),
+                      Positioned(
+                          top: 15,
+                          right: 10,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(100),
+                            onTap: () {Navigator.pop(context);},
+                            child: Container(
+                              height:w*0.1,
+                              width: w*0.1,
+                              decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black.withOpacity(0.5),
+                                        blurRadius: 10,
+                                        blurStyle: BlurStyle.normal,
+                                        spreadRadius: 0.01,
+                                        offset: Offset(3,4)
+                                    )
+                                  ]
+                              ),
+                              child: Transform.scale(
+                                scale: 1.5,
+                                child: Icon(
+                                  Icons.close_sharp,
+                                  color: Colors.teal,
+                                ),
+                              ),
+                            ),
+                          )),
                       widget.Prudact1['Discount']>0?Positioned(
                         left: 5,
                         top: 15,
@@ -188,10 +231,12 @@ CalculatorPrise({required List Pri}){
                                                 test = widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice'];
                                                 widget.Prudact1['Opitions'][index]['subOptions'][index1]['add'] = true;
                                                 FinalPrise1[index][index1] = widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice'];
+                                                Number[index]=index1;
+                                                print(Number);
                                               });
                                               CalculatorPrise(Pri: FinalPrise1);
-
                                             },
+
                                             child: Container(
                                               padding: EdgeInsets.symmetric(horizontal: _width/7),
                                               margin: EdgeInsets.only(bottom: 2),
@@ -256,7 +301,7 @@ CalculatorPrise({required List Pri}){
                                 ),
                               )
                           ,),
-                        SizedBox(height:h*0.16 ,),
+                        SizedBox(height:h*0.1 ,),
                         InkWell(
                           borderRadius: BorderRadius.circular(15),
                           onTap: () async {
@@ -328,9 +373,8 @@ CalculatorPrise({required List Pri}){
                               Provaider.GetNumberByProducts(myItems!) + 1;
                               Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
                             }
-                            Provaider.price=FinalPrise+Provaider.price;
-                            Navigator.pop(context);
                             showSnackBar(context: context, text: 'تم اضافة المنتج الى السلة', color1: Colors.green);
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>AddToCartResturant1(Prudact1: widget.Prudact1) ,));
                           },
                           child: Container(
                             decoration: BoxDecoration(borderRadius:BorderRadius.circular(15),
@@ -348,7 +392,9 @@ CalculatorPrise({required List Pri}){
                             child: Center(child: Text('إضافة',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white),)),
                           ),
                         ),
-                        ElevatedButton(onPressed:() {print(Provaider.price);}, child: Text('prise'))
+                        ElevatedButton(onPressed: () {
+                          ListOpitionNumber();
+                        }, child: Text('test'))
                       ],
                     ),
                   ),
@@ -360,13 +406,3 @@ CalculatorPrise({required List Pri}){
     );
   }
 }
-/*  CreatListPrise({required List<int> a}){
-    int Opitions=0;
-    int mainOptions=widget.Prudact1['Opitions'].length;
-    for(int i=0;i<mainOptions;i++)
-    {int Count=widget.Prudact1['Opitions'][i]['subOptions'].length;
-      Opitions+=Count;
-    }
-    a = List.generate(Opitions, (index) => index == 0 ? widget.Prudact1['Prise']:0);
-    FinalPrise1=a;
-}*/

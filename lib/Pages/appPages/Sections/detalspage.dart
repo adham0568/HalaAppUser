@@ -34,51 +34,6 @@ class _DetalesState extends State<Detales> {
   SizeFix SizeQ=SizeFix();
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        actions: [
-          SizedBox(
-            height: 50,
-            width: 50,
-            child: Stack(
-              children: [
-                Positioned(
-                    top: 7,
-                    left: 25,
-                    child: Container(
-                      height: 20,
-                      width: 20,
-                      decoration: const BoxDecoration(color: Color.fromRGBO(20, 20, 20, 200), shape: BoxShape.circle),
-                      child: Center(child: Consumer<total>(
-                        builder: (context, value, child) {
-                          return Text(value.Num1().toString(),style: const TextStyle(fontSize: 15,color: Colors.black45),);
-                        },
-                      )),
-                    )),
-                Positioned(
-                    top: 10,
-                    right: 10,
-                    left: 10,
-                    bottom: 10,
-                    child: IconButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const CartPage()));
-                    }, icon: const Icon(CupertinoIcons.cart,color: Colors.white,))),
-
-              ],
-            ),
-          )
-        ],
-        title: Image.asset('assets/Img/logowelcome.png'),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Color.fromRGBO(56, 95, 172, 1),
-                Color.fromRGBO(1, 183, 168, 1)
-              ]
-          )),
-        ),
-      ),*/
       body:SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
