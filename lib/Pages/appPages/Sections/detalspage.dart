@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:halaapp/models/CartProvider.dart';
+import 'package:halaapp/models/DiscountDesgin.dart';
 import 'package:halaapp/models/HIGHT.dart';
 import 'package:provider/provider.dart';
 import '../../../models/add.dart';
@@ -50,11 +51,7 @@ class _DetalesState extends State<Detales> {
                         Positioned(
                             top: 15,
                             left: 10,
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(100),
-                              onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context)=>const CartPage()));},
-                                child:CartWidget(h:SizeQ.wight(context: context)*0.1 ,w:SizeQ.wight(context: context)*0.1 ,)
-                            )),
+                            child: CartWidget(h:SizeQ.wight(context: context)*0.1 ,w:SizeQ.wight(context: context)*0.1 ,)),
                         Positioned(
                             top: 15,
                             right: 10,
@@ -142,20 +139,9 @@ class _DetalesState extends State<Detales> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       discounts?
-                      Container(
-                        padding: EdgeInsets.only(left: 5,right: 5,top: 5,bottom: 5),
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color: Colors.pink.withOpacity(0.2)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('%${(widget.Prudact['Discount']/widget.Prudact['Prise']*100).round()}',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.pink),),
-                            SizedBox(width: 3,),
-                            Text('وفر',style: TextStyle(color: Colors.pink,fontWeight: FontWeight.bold),),
-                            SizedBox(width: 3,),
-                            Icon(Icons.discount,size: 20,color: Colors.pink.withOpacity(0.8)),
-                          ],
-                        ),
-                      ):const Text(''),
+                      DiscountWidget(Prise: widget.Prudact['Prise'], Discount: widget.Prudact['Discount'], Size1: 20)
+                          :
+                      const Text(''),
                       Row(mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text('₪${widget.Prudact['Prise']}',style: const TextStyle(fontSize: 18,color: Colors.grey,fontWeight: FontWeight.w300,

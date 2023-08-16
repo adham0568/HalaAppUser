@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../Pages/appPages/Sections/detalspage.dart';
+import 'DiscountDesgin.dart';
 import 'add.dart';
 
 class GridView2 extends StatelessWidget {
@@ -70,14 +71,6 @@ class GridView2 extends StatelessWidget {
                                       children: [
                                          Stack(
                                           children: [
-
-                                            snapshot.data!.docs[index]['Discount']>0?
-                                            const Row(children: [
-                                              Icon(CupertinoIcons.gift,size: 15,color: Colors.teal),
-                                              Text('خصم',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Colors.teal),),
-                                            ],):const Text(''),
-
-
                                             Center(
                                               child: CachedNetworkImage(
                                                 imageUrl: snapshot.data!.docs[index]['ImageUrl'],
@@ -128,6 +121,13 @@ class GridView2 extends StatelessWidget {
                                         )
                                             :
                                         Text('${snapshot.data!.docs[index]['Prise']} ₪',style: const TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 18),),
+                                        snapshot.data!.docs[index]['Discount']>0?
+                                        Container(
+                                            width: w/5.8,
+                                            child: DiscountWidget(Prise:  snapshot.data!.docs[index]['Prise'], Discount:snapshot.data!.docs[index]['Discount'] , Size1: 10))
+                                            :
+                                        const Text(''),
+
                                       ],
                                     ),
                                   ),

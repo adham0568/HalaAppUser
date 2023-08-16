@@ -18,16 +18,7 @@ class CartProvider with ChangeNotifier {
 
 
   AddToCart({required Item item}) {
-    if(Products.isNotEmpty){
-      if(Products.first.IdMarket==item.IdMarket)
-      {Products.add(item);}
-      else{Products.clear();
-        Products.add(item);
-      }
-    }
-   else if(Products.isEmpty){
-      Products.add(item);
-    }
+    Products.add(item);
   }
 
   RemoveToCart(Item item,int idToDelete) {

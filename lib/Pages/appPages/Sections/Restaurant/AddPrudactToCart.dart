@@ -5,6 +5,7 @@ import 'package:halaapp/models/CartProvider.dart';
 import 'package:halaapp/models/snack.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../models/DiscountDesgin.dart';
 import '../../../../models/Item.dart';
 import '../../../../provider/CartProvider.dart';
 import '../../../../provider/TotalPrudact.dart';
@@ -17,6 +18,7 @@ class AddToCartResturant1 extends StatefulWidget {
   @override
   State<AddToCartResturant1> createState() => _AddToCartResturant1State();
 }
+bool discounts=false;
 List FinalPrise1=[];
 List<int> Number=[];
 bool ShowOpitions=true;
@@ -55,8 +57,28 @@ CalculatorPrise({required List Pri}){
   additionPrise=Prise1;
     print(Prise1);
 }
+ResetValue(){
+  ListOpitionNumber();
+  createListPrice();
+  setState(() {
+    myItems = Item(
+      IdMarket: widget.Prudact1['IdMarket'],
+      Discount: widget.Prudact1['Discount'],
+      Name: widget.Prudact1['Name'],
+      IdCollection: widget.Prudact1['IdCollection'],
+      IdMainCollection: widget.Prudact1['IdMainCollection'],
+      IdPrudact: widget.Prudact1['IdPrudact'],
+      ImageUrl: widget.Prudact1['ImageUrl'],
+      PrudactsDetals: widget.Prudact1['PrudactsDetals'],
+      Prise: widget.Prudact1['Prise']-widget.Prudact1['Discount'],
+      TybePrudact:widget.Prudact1['TybePrudact'] ,
+      Opitions: widget.Prudact1['Opitions'],
+      OpitionSelected: Number,
+    );
+  });
+  myItems!.Discount>0?discounts=true:discounts=false;
 
-
+}
   @override
   Item? myItems;
   int test=0;
@@ -66,25 +88,8 @@ CalculatorPrise({required List Pri}){
   int FinalPrise=0;
   @override
   void initState() {
-    ListOpitionNumber();
-    createListPrice();
-    setState(() {
-      myItems = Item(
-        IdMarket: widget.Prudact1['IdMarket'],
-        Discount: widget.Prudact1['Discount'],
-        Name: widget.Prudact1['Name'],
-        IdCollection: widget.Prudact1['IdCollection'],
-        IdMainCollection: widget.Prudact1['IdMainCollection'],
-        IdPrudact: widget.Prudact1['IdPrudact'],
-        ImageUrl: widget.Prudact1['ImageUrl'],
-        PrudactsDetals: widget.Prudact1['PrudactsDetals'],
-        Prise: widget.Prudact1['Prise']-widget.Prudact1['Discount'],
-        TybePrudact:widget.Prudact1['TybePrudact'] ,
-        Opitions: widget.Prudact1['Opitions'],
-        OpitionSelected: Number,
-      );
-    });
-        super.initState();
+    ResetValue();
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -156,25 +161,10 @@ CalculatorPrise({required List Pri}){
                               ),
                             ),
                           )),
-                      widget.Prudact1['Discount']>0?Positioned(
-                        left: 5,
-                        top: 15,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Icon(CupertinoIcons.gift,color: Colors.black,size: 35,),
-                            Row(
-                              children: [
-                                Text('${widget.Prudact1['Discount']}₪',style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.red)),
-                                const Text('خصم بقيمة ',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.teal)),
-                              ],
-                            )
-                          ],
-                        ),
-                      ):const Text('')
                     ],
                   ),
+                  discounts?
+                  Container(width: _width*2.5,child: DiscountWidget(Prise: myItems!.Prise, Discount:myItems!.Discount, Size1: 15),):const Text(''),
                   Text(widget.Prudact1['Name'],style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.black),),
                   Container(
                     margin: const EdgeInsets.only(right: 20),
@@ -220,17 +210,29 @@ CalculatorPrise({required List Pri}){
                                             splashColor: Colors.teal,
                                             onTap: () {
                                               setState(() {
-                                                test = widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice'];
-                                                widget.Prudact1['Opitions'][index]['subOptions'].forEach((item) {
+                                                myItems!.Opitions[index]['subOptions'].forEach((item) {
+                                                  item['add'] = false;
+                                                  int itemIndex =  myItems!.Opitions[index]['subOptions'].indexOf(item);
+                                                  if (itemIndex >= 0 && itemIndex < FinalPrise1[index].length) {
+                                                    FinalPrise1[index][itemIndex] = 0;
+                                                  }
+                                                });
+                                                //test = widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice'];
+                                               /* widget.Prudact1['Opitions'][index]['subOptions'].forEach((item) {
                                                   item['add'] = false;
                                                   int itemIndex = widget.Prudact1['Opitions'][index]['subOptions'].indexOf(item);
                                                   if (itemIndex >= 0 && itemIndex < FinalPrise1[index].length) {
                                                     FinalPrise1[index][itemIndex] = 0;
                                                   }
-                                                });
-                                                test = widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice'];
-                                                widget.Prudact1['Opitions'][index]['subOptions'][index1]['add'] = true;
-                                                FinalPrise1[index][index1] = widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice'];
+                                                });*/
+                                                /*------------*/
+                                                myItems!.Opitions[index]['subOptions'][index1]['add'] = true;
+                                                FinalPrise1[index][index1] =  myItems!.Opitions[index]['subOptions'][index1]['optionPrice'];
+                                                /*------------*/
+
+                                                //test = widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice'];
+                                                //widget.Prudact1['Opitions'][index]['subOptions'][index1]['add'] = true;
+                                                //FinalPrise1[index][index1] = widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice'];
                                                 Number[index]=index1;
                                                 print(Number);
                                               });
@@ -311,8 +313,6 @@ CalculatorPrise({required List Pri}){
                                 Provaider.addPrudact(item: myItems!);
 
                                 Provaider1.addNum();
-                                _width = 140;
-                                _height = 30;
                                 setState(() {
                                   Provaider.AddToCart(item: myItems!);
                                 });
@@ -338,8 +338,6 @@ CalculatorPrise({required List Pri}){
                                               myItems!.Prise=myItems!.Prise+additionPrise;
                                               Provaider.addPrudact(item: myItems!);
                                               Provaider1.addNum();
-                                              _width = 140;
-                                              _height = 30;
                                               setState(() {
                                                 Provaider.AddToCart(item: myItems!);
                                               });
@@ -363,8 +361,6 @@ CalculatorPrise({required List Pri}){
                               Provaider.addPrudact(item: myItems!);
                               Provaider.xid1=myItems!.IdMarket;
                               Provaider1.addNum();
-                              _width = 140;
-                              _height = 30;
                               myItems!.Prise=myItems!.Prise+additionPrise;
                               setState(() {
                                 Provaider.AddToCart(item: myItems!);
@@ -374,7 +370,9 @@ CalculatorPrise({required List Pri}){
                               Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
                             }
                             showSnackBar(context: context, text: 'تم اضافة المنتج الى السلة', color1: Colors.green);
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>AddToCartResturant1(Prudact1: widget.Prudact1) ,));
+                            setState(() {
+                              ResetValue();
+                            });
                           },
                           child: Container(
                             decoration: BoxDecoration(borderRadius:BorderRadius.circular(15),
@@ -393,7 +391,7 @@ CalculatorPrise({required List Pri}){
                           ),
                         ),
                         ElevatedButton(onPressed: () {
-                          ListOpitionNumber();
+                          print(widget.Prudact1);
                         }, child: Text('test'))
                       ],
                     ),

@@ -148,6 +148,9 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            //حبش 0
+            //1
+            ElevatedButton(onPressed: () {print(Provaider.Products[1].Opitions);}, child: Text('test')),
             Container(
               margin: const EdgeInsets.all(16),
               height: 250,
