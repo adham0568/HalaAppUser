@@ -6,6 +6,8 @@ import 'package:halaapp/provider/CartProvider.dart';
 import 'package:halaapp/provider/TotalPrudact.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../models/CartProvider.dart';
+import '../../../../models/CloseWidget.dart';
 import '../../Cart/CartPage.dart';
 
 class PrudactPageForHalaMart extends StatefulWidget {
@@ -26,9 +28,25 @@ class _PrudactPageForHalaMartState extends State<PrudactPageForHalaMart> with Si
     return Scaffold(
       body: CustomScrollView(
         slivers: [
+          /*SliverAppBar(
+            expandedHeight: 200,
+            pinned: true,
+            backgroundColor: Colors.white,
+            flexibleSpace: FlexibleSpaceBar(
+              background: CachedNetworkImage(
+                imageUrl: widget.DataFromCollection['ImageUrl'],
+                placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+            ),
+            leading:
+            actions: [
+
+            ],
+          ),*/
           SliverAppBar(expandedHeight: 200,
             pinned: true,
-            backgroundColor: Colors.black12,
+            backgroundColor: Colors.white,
             flexibleSpace: FlexibleSpaceBar(
               background: CachedNetworkImage(
                   imageUrl: widget.DataFromCollection['Image'],
@@ -38,49 +56,10 @@ class _PrudactPageForHalaMartState extends State<PrudactPageForHalaMart> with Si
             ),
             leading: Padding(
               padding: const EdgeInsets.only(left: 16),
-              child: InkWell(
-                onTap: (){
-                  Navigator.pop(context);
-                },
-                child: const CircleAvatar(
-                  backgroundColor: Colors.white,child: Icon(CupertinoIcons.back,color: Colors.black,),),
-              ),
+              child: Center(child: CloseWidget(w: w,icon: false)),
             ),
             actions: [
-              Container(
-                margin: const EdgeInsets.only(right: 10),
-                decoration: const BoxDecoration(shape: BoxShape.circle,color: Colors.white),
-                width: 40,height: 40,
-                child: Stack(
-                  children: [
-                    Positioned(
-                        top: 9,
-                        left: 15,
-                        child: Container(
-                          height: 20,
-                          width: 20,
-                          decoration: const BoxDecoration(color: Color.fromRGBO(0, 222, 207, 100), shape: BoxShape.circle),
-
-                          child: Center(child: Consumer<total>(
-                              builder: (context, value, child) {
-                                return Text(value.Num1().toString(),style: const TextStyle(fontSize: 15,color: Colors.black45),);
-                              },
-                          )),
-                        )),
-                    Positioned(
-                        top: 10,
-                        right: 2,
-                        left: 1,
-                        bottom: 10,
-                        child: IconButton(onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => const CartPage()));
-                        },
-                            icon: const Icon(CupertinoIcons.cart,
-                              color: Colors.black,))),
-                  ],
-                ),
-              )
+              CartWidget(h: w*0.1, w: w*0.1),
             ],
           ),
 

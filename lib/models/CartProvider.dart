@@ -42,7 +42,7 @@ class _CartWidgetState extends State<CartWidget> {
                   )
                 ]
                 ),
-                child:Change?Icon(CupertinoIcons.bag_fill,size: widget.h*0.6,color: Colors.teal,):Icon(CupertinoIcons.bag,size: widget.h*0.6,),
+                child:Change?Icon(CupertinoIcons.bag_fill,size: widget.h*0.6,color: Colors.teal,):Icon(CupertinoIcons.bag,size: widget.h*0.6,color: Colors.black,),
               ),
               Positioned(
                   bottom: widget.h*0.13,

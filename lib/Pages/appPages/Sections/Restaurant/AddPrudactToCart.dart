@@ -5,6 +5,7 @@ import 'package:halaapp/models/CartProvider.dart';
 import 'package:halaapp/models/snack.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../models/CloseWidget.dart';
 import '../../../../models/DiscountDesgin.dart';
 import '../../../../models/Item.dart';
 import '../../../../provider/CartProvider.dart';
@@ -20,16 +21,21 @@ class AddToCartResturant1 extends StatefulWidget {
 }
 bool discounts=false;
 List FinalPrise1=[];
-List<int> Number=[];
+List Number=[];
 bool ShowOpitions=true;
 int Count=0;
 int additionPrise=0;
 class _AddToCartResturant1State extends State<AddToCartResturant1> {
+ bool AllowAdd(){
+   bool Allow=false;
+   Number.contains(null)?Allow=false:Allow=true;
+   return Allow;
+  }
 
   void ListOpitionNumber(){
     int mainOptions = widget.Prudact1['Opitions'].length;
     for(int i=0;i<mainOptions;i++){
-      Number= List.generate(mainOptions, (index) => 0);
+      Number= List.generate(mainOptions, (index) => null);
     }
     print(Number);
   }
@@ -88,6 +94,7 @@ ResetValue(){
   int FinalPrise=0;
   @override
   void initState() {
+    AllowAdd();
     ResetValue();
     super.initState();
   }
@@ -100,306 +107,271 @@ ResetValue(){
 
     return Scaffold(
       body: SafeArea(
-        child: Container(
-            color:Colors.black26.withOpacity(0.04),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child:CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              expandedHeight: 200,
+              pinned: true,
+              backgroundColor: Colors.white,
+              flexibleSpace: FlexibleSpaceBar(
+                background: CachedNetworkImage(
+                  imageUrl:  widget.Prudact1['ImageUrl'],
+                  placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+              ),
+              leading: Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Center(child: CloseWidget(w: w,icon: false)),
+              ),
+              actions: [
+                CartWidget(h: w*0.1, w: w*0.1),
+              ],
+            ),
+            SliverFillViewport(delegate: SliverChildBuilderDelegate(
+                childCount: 1,(context, index) {
+              return Stack(
                 children: [
-                  Stack(
-                    children: [
-                      Container(
-                        color: Colors.white,
-                        margin: EdgeInsets.only(bottom: 20),
-                        height: h/3.7,
-                        child: CachedNetworkImage(
-                          imageUrl: widget.Prudact1['ImageUrl'],
-                          placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
-                          errorWidget: (context, url, error) => const Icon(Icons.error),
-                          imageBuilder: (context, imageProvider) => Container(
-                            height: h/3.7,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.contain,
+                  Container(
+                      color:Colors.black26.withOpacity(0.04),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          discounts?
+                          Container(width: _width*2.5,child: DiscountWidget(Prise: myItems!.Prise, Discount:myItems!.Discount, Size1: 15),):const Text(''),
+                          Text(widget.Prudact1['Name'],style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.black),),
+                          Container(
+                            margin: const EdgeInsets.only(right: 20),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(widget.Prudact1['PrudactsDetals'],style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400,color: Colors.black),
+                                textAlign: TextAlign.right,  // Align text to the right
+                                textDirection: TextDirection.rtl, // Start from the right
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      Positioned(
-                          top: 15,
-                          left: 15,
-                          child: CartWidget(h: w*0.1, w: w*0.1)),
-                      Positioned(
-                          top: 15,
-                          right: 10,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(100),
-                            onTap: () {Navigator.pop(context);},
-                            child: Container(
-                              height:w*0.1,
-                              width: w*0.1,
-                              decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black.withOpacity(0.5),
-                                        blurRadius: 10,
-                                        blurStyle: BlurStyle.normal,
-                                        spreadRadius: 0.01,
-                                        offset: Offset(3,4)
-                                    )
-                                  ]
-                              ),
-                              child: Transform.scale(
-                                scale: 1.5,
-                                child: Icon(
-                                  Icons.close_sharp,
-                                  color: Colors.teal,
-                                ),
-                              ),
-                            ),
-                          )),
-                    ],
-                  ),
-                  discounts?
-                  Container(width: _width*2.5,child: DiscountWidget(Prise: myItems!.Prise, Discount:myItems!.Discount, Size1: 15),):const Text(''),
-                  Text(widget.Prudact1['Name'],style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.black),),
-                  Container(
-                    margin: const EdgeInsets.only(right: 20),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(widget.Prudact1['PrudactsDetals'],style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400,color: Colors.black),
-                        textAlign: TextAlign.right,  // Align text to the right
-                        textDirection: TextDirection.rtl, // Start from the right
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 120),
-                    child: Column(
-                      children: [
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount:widget.Prudact1['Opitions'].length ,
-                          itemBuilder: (context, index) =>
-                              Container(
-                                color: Colors.white.withOpacity(0.8),
-                                margin: EdgeInsets.only(bottom: 5,top: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(right: _width/7),
-                                      child: Text(widget.Prudact1['Opitions'][index]['mainOption'],
-                                        style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.black),),
-                                    ),
-                                     ListView.builder(
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: widget.Prudact1['Opitions'][index]['subOptions'].length
-                                      ,itemBuilder: (context, index1) => Container(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          InkWell(
-                                            splashColor: Colors.teal,
-                                            onTap: () {
-                                              setState(() {
-                                                myItems!.Opitions[index]['subOptions'].forEach((item) {
-                                                  item['add'] = false;
-                                                  int itemIndex =  myItems!.Opitions[index]['subOptions'].indexOf(item);
-                                                  if (itemIndex >= 0 && itemIndex < FinalPrise1[index].length) {
-                                                    FinalPrise1[index][itemIndex] = 0;
-                                                  }
-                                                });
-                                                //test = widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice'];
-                                               /* widget.Prudact1['Opitions'][index]['subOptions'].forEach((item) {
-                                                  item['add'] = false;
-                                                  int itemIndex = widget.Prudact1['Opitions'][index]['subOptions'].indexOf(item);
-                                                  if (itemIndex >= 0 && itemIndex < FinalPrise1[index].length) {
-                                                    FinalPrise1[index][itemIndex] = 0;
-                                                  }
-                                                });*/
-                                                /*------------*/
-                                                myItems!.Opitions[index]['subOptions'][index1]['add'] = true;
-                                                FinalPrise1[index][index1] =  myItems!.Opitions[index]['subOptions'][index1]['optionPrice'];
-                                                /*------------*/
-
-                                                //test = widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice'];
-                                                //widget.Prudact1['Opitions'][index]['subOptions'][index1]['add'] = true;
-                                                //FinalPrise1[index][index1] = widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice'];
-                                                Number[index]=index1;
-                                                print(Number);
-                                              });
-                                              CalculatorPrise(Pri: FinalPrise1);
-                                            },
-
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(horizontal: _width/7),
-                                              margin: EdgeInsets.only(bottom: 2),
-                                              child: Row(
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 120),
+                            child: Column(
+                              children: [
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount:widget.Prudact1['Opitions'].length ,
+                                  itemBuilder: (context, index) =>
+                                      Container(
+                                        color: Colors.white.withOpacity(0.8),
+                                        margin: EdgeInsets.only(bottom: 5,top: 5),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(right: _width/7),
+                                              child: Text(widget.Prudact1['Opitions'][index]['mainOption'],
+                                                style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.black),),
+                                            ),
+                                            ListView.builder(
+                                              physics: const NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: widget.Prudact1['Opitions'][index]['subOptions'].length
+                                              ,itemBuilder: (context, index1) => Container(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.end,
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
-                                                  Row(
-                                                    children: [
-                                                      AnimatedContainer(
-                                                        duration: Duration(milliseconds: 300), // مدة الانتقال بالمللي ثانية
-                                                        margin: EdgeInsets.only(left: _width / 7),
-                                                        height: _width / 2,
-                                                        width: _width / 2,
-                                                        decoration: BoxDecoration(
-                                                          color: widget.Prudact1['Opitions'][index]['subOptions'][index1]['add'] ? Colors.teal : Colors.white,
-                                                          shape: BoxShape.circle,
-                                                          border:widget.Prudact1['Opitions'][index]['subOptions'][index1]['add'] ?
-                                                          Border.all(color: Colors.white, width: 0)
-                                                              :
-                                                          Border.all(color: Colors.black26, width: 1.1)
+                                                  InkWell(
+                                                    splashColor: Colors.teal,
+                                                    onTap: () {
+                                                      setState(() {
+                                                        myItems!.Opitions[index]['subOptions'].forEach((item) {
+                                                          item['add'] = false;
+                                                          int itemIndex =  myItems!.Opitions[index]['subOptions'].indexOf(item);
+                                                          if (itemIndex >= 0 && itemIndex < FinalPrise1[index].length) {
+                                                            FinalPrise1[index][itemIndex] = 0;
+                                                          }
+                                                        });
 
-                                                          ,
-                                                        ),
-                                                        child: Center(
-                                                          child: AnimatedContainer(
-                                                            duration: Duration(milliseconds: 100), // مدة الانتقال بالمللي ثانية
-                                                            padding: widget.Prudact1['Opitions'][index]['subOptions'][index1]['add']
-                                                                ? EdgeInsets.only(left: 0)
-                                                                : EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 20),
-                                                            child: AnimatedOpacity(
-                                                              opacity: widget.Prudact1['Opitions'][index]['subOptions'][index1]['add'] ? 1.0 : 0.0,
-                                                              duration: Duration(milliseconds: 100), // مدة الانتقال بالمللي ثانية
-                                                              child: AnimatedContainer(
-                                                                duration: Duration(milliseconds: 100), // مدة التحجيم بالمللي ثانية
-                                                                transform: Matrix4.identity()
-                                                                  ..scale(widget.Prudact1['Opitions'][index]['subOptions'][index1]['add'] ? 1.0 : 0.0),
-                                                                child: Icon(Icons.check, color: Colors.white, size: _width / 2.2),
+                                                        myItems!.Opitions[index]['subOptions'][index1]['add'] = true;
+                                                        FinalPrise1[index][index1] =  myItems!.Opitions[index]['subOptions'][index1]['optionPrice'];
+                                                        Number[index]=index1;
+                                                        AllowAdd();
+                                                      });
+                                                      CalculatorPrise(Pri: FinalPrise1);
+                                                    },
+
+                                                    child: Container(
+                                                      padding: EdgeInsets.symmetric(horizontal: _width/7),
+                                                      margin: EdgeInsets.only(bottom: 2),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              AnimatedContainer(
+                                                                duration: Duration(milliseconds: 300), // مدة الانتقال بالمللي ثانية
+                                                                margin: EdgeInsets.only(left: _width / 7),
+                                                                height: _width / 2,
+                                                                width: _width / 2,
+                                                                decoration: BoxDecoration(
+                                                                  color: widget.Prudact1['Opitions'][index]['subOptions'][index1]['add'] ? Colors.teal : Colors.white,
+                                                                  shape: BoxShape.circle,
+                                                                  border:widget.Prudact1['Opitions'][index]['subOptions'][index1]['add'] ?
+                                                                  Border.all(color: Colors.white, width: 0)
+                                                                      :
+                                                                  Border.all(color: Colors.black26, width: 1.1)
+                                                                  ,
+                                                                ),
+                                                                child: Center(
+                                                                    child: AnimatedContainer(
+                                                                      duration: Duration(milliseconds: 100), // مدة الانتقال بالمللي ثانية
+                                                                      padding: widget.Prudact1['Opitions'][index]['subOptions'][index1]['add']
+                                                                          ? EdgeInsets.only(left: 0)
+                                                                          : EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 20),
+                                                                      child: AnimatedOpacity(
+                                                                        opacity: widget.Prudact1['Opitions'][index]['subOptions'][index1]['add'] ? 1.0 : 0.0,
+                                                                        duration: Duration(milliseconds: 100), // مدة الانتقال بالمللي ثانية
+                                                                        child: AnimatedContainer(
+                                                                          duration: Duration(milliseconds: 100), // مدة التحجيم بالمللي ثانية
+                                                                          transform: Matrix4.identity()
+                                                                            ..scale(widget.Prudact1['Opitions'][index]['subOptions'][index1]['add'] ? 1.0 : 0.0),
+                                                                          child: Icon(Icons.check, color: Colors.white, size: _width / 2.2),
+                                                                        ),
+                                                                      ),
+                                                                    )
+
+                                                                ),
                                                               ),
-                                                            ),
-                                                          )
+                                                              SizedBox(width: _width/7,),
+                                                              widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice']>0?
+                                                              Text('₪${widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice']} +',
+                                                                style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w300,color: Colors.black54),)
+                                                                  :
+                                                              const Text(''),
+                                                            ],
+                                                          ),
+                                                          Text(widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionName'],style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
 
-                                                        ),
+                                                        ],
                                                       ),
-                                                      SizedBox(width: _width/7,),
-                                                      widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice']>0?
-                                                      Text('₪${widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionPrice']} +',
-                                                        style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w300,color: Colors.black54),)
-                                                          :
-                                                      const Text(''),
-                                                    ],
-                                                  ),
-                                                  Text(widget.Prudact1['Opitions'][index]['subOptions'][index1]['optionName'],style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-
+                                                    ),
+                                                  )
                                                 ],
                                               ),
-                                            ),
+                                            ) ,),
+                                          ],
+                                        ),
+                                      )
+                                  ,),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                  ),
+                  Positioned(
+                    bottom: 50,
+                    left: w/3,
+                    right: 100,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(15),
+                      //
+                      onTap: () async {
+                            if(AllowAdd()){
+                              if(Provaider.Products.isNotEmpty){
+                                if(Provaider.Products.first.IdMarket==myItems!.IdMarket){
+                                  myItems!.Prise=myItems!.Prise+additionPrise;
+                                  Provaider.addPrudact(item: myItems!);
+
+                                  Provaider1.addNum();
+                                  setState(() {
+                                    Provaider.AddToCart(item: myItems!);
+                                  });
+                                  Provaider.GetNumberByProducts(myItems!) + 1;
+                                  Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
+                                }
+                                else if(Provaider.Products.first.IdMarket!=myItems!.IdMarket){
+                                  showDialog(context: context, builder: (context) => AlertDialog(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                    content: Container(
+                                      height: 160,
+                                      color: Colors.white,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          const Text('بدء سلة جديدة؟',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.black),),
+                                          const Text('عند بدء طلب من متجر جديد سيتم ازالة المنتجات من المتاجر الاخرى',style: TextStyle(fontWeight:FontWeight.bold,fontSize: 15,color: Colors.black54), textDirection: TextDirection.rtl,),
+                                          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              ElevatedButton(onPressed: (){
+                                                Provaider.xid1=myItems!.IdMarket;
+                                                myItems!.Prise=myItems!.Prise+additionPrise;
+                                                Provaider.addPrudact(item: myItems!);
+                                                Provaider1.addNum();
+                                                setState(() {
+                                                  Provaider.AddToCart(item: myItems!);
+                                                });
+                                                Provaider.GetNumberByProducts(myItems!) + 1;
+                                                Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
+                                                Provaider1.Num=1;
+                                                Navigator.pop(context);
+                                              },
+                                                  style:ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal),overlayColor: MaterialStateProperty.all(Colors.red)), child: const Text('تأكيد البدء',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
+                                              ElevatedButton(onPressed: (){Navigator.pop(context);},
+                                                  style:ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white),overlayColor: MaterialStateProperty.all(Colors.green)), child: const Text('الغاء',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.teal),)),
+                                            ],
                                           )
                                         ],
                                       ),
-                                    ) ,),
-                                  ],
-                                ),
-                              )
-                          ,),
-                        SizedBox(height:h*0.1 ,),
-                        InkWell(
-                          borderRadius: BorderRadius.circular(15),
-                          onTap: () async {
-                            if(Provaider.Products.isNotEmpty){
-                              if(Provaider.Products.first.IdMarket==myItems!.IdMarket){
-                                myItems!.Prise=myItems!.Prise+additionPrise;
+                                    ),
+                                  ),);
+                                }
+                              }
+                              else{
                                 Provaider.addPrudact(item: myItems!);
-
+                                Provaider.xid1=myItems!.IdMarket;
                                 Provaider1.addNum();
+                                myItems!.Prise=myItems!.Prise+additionPrise;
                                 setState(() {
                                   Provaider.AddToCart(item: myItems!);
                                 });
+
                                 Provaider.GetNumberByProducts(myItems!) + 1;
                                 Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
                               }
-                              else if(Provaider.Products.first.IdMarket!=myItems!.IdMarket){
-                                showDialog(context: context, builder: (context) => AlertDialog(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                  content: Container(
-                                    height: 160,
-                                    color: Colors.white,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        const Text('بدء سلة جديدة؟',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.black),),
-                                        const Text('عند بدء طلب من متجر جديد سيتم ازالة المنتجات من المتاجر الاخرى',style: TextStyle(fontWeight:FontWeight.bold,fontSize: 15,color: Colors.black54), textDirection: TextDirection.rtl,),
-                                        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            ElevatedButton(onPressed: (){
-                                              Provaider.xid1=myItems!.IdMarket;
-                                              myItems!.Prise=myItems!.Prise+additionPrise;
-                                              Provaider.addPrudact(item: myItems!);
-                                              Provaider1.addNum();
-                                              setState(() {
-                                                Provaider.AddToCart(item: myItems!);
-                                              });
-                                              Provaider.GetNumberByProducts(myItems!) + 1;
-                                              Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
-                                              Provaider1.Num=1;
-                                              Navigator.pop(context);
-                                            },
-                                                style:ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal),overlayColor: MaterialStateProperty.all(Colors.red)), child: const Text('تأكيد البدء',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
-                                            ElevatedButton(onPressed: (){Navigator.pop(context);},
-                                                style:ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white),overlayColor: MaterialStateProperty.all(Colors.green)), child: const Text('الغاء',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.teal),)),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),);
-                              }
-                            }
-                            else{
-                              Provaider.addPrudact(item: myItems!);
-                              Provaider.xid1=myItems!.IdMarket;
-                              Provaider1.addNum();
-                              myItems!.Prise=myItems!.Prise+additionPrise;
+                              showSnackBar(context: context, text: 'تم اضافة المنتج الى السلة', color1: Colors.green);
                               setState(() {
-                                Provaider.AddToCart(item: myItems!);
+                                ResetValue();
                               });
-
-                              Provaider.GetNumberByProducts(myItems!) + 1;
-                              Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
                             }
-                            showSnackBar(context: context, text: 'تم اضافة المنتج الى السلة', color1: Colors.green);
-                            setState(() {
-                              ResetValue();
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(borderRadius:BorderRadius.circular(15),
+                            else{showSnackBar(context: context, text: 'الرجاء تحديد اختيارات', color1: Colors.pinkAccent);}
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(borderRadius:BorderRadius.circular(15),
                             gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [
-                                Colors.teal,
-                                Colors.tealAccent
-                              ]
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors:AllowAdd()?[
+                                  Colors.teal,
+                                  Colors.tealAccent]
+                                    :
+                                [Colors.black,
+                                  Colors.black],
                             )
-                            ),
-                            width: w*0.6,
-                            height:h*0.06,
-                            child: Center(child: Text('إضافة',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white),)),
-                          ),
                         ),
-                        ElevatedButton(onPressed: () {
-                          print(widget.Prudact1);
-                        }, child: Text('test'))
-                      ],
+                        width: w*0.6,
+                        height:h*0.06,
+                        child: Center(child: Text('إضافة',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white),)),
+                      ),
                     ),
-                  ),
+                  )
                 ],
-              ),
-            )
-        ),
+              );
+            })),
+
+          ],
+        )
       ),
     );
   }

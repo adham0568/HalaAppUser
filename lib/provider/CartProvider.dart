@@ -23,7 +23,7 @@ class CartProvider with ChangeNotifier {
 
   RemoveToCart(Item item,int idToDelete) {
     for (int i = 0; i < Products.length; i++) {
-      if (Products[i].IdPrudact == idToDelete) {
+      if (Products[i].IdPrudact == idToDelete &&Products[i].OpitionSelected==item.OpitionSelected) {
         Products.removeAt(i);
         break;
       }

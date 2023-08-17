@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:halaapp/provider/CartProvider.dart';
 import 'package:halaapp/provider/TotalPrudact.dart';
 import 'package:provider/provider.dart';
+import '../../../../models/CartProvider.dart';
+import '../../../../models/CloseWidget.dart';
 import '../../Cart/CartPage.dart';
 import 'PrudactRestaurant.dart';
 
@@ -25,9 +27,10 @@ class _PrudactsRustState extends State<PrudactsRust> with SingleTickerProviderSt
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(expandedHeight: 200,
+          SliverAppBar(
+            expandedHeight: 200,
             pinned: true,
-            backgroundColor: Colors.black12,
+            backgroundColor: Colors.white,
             flexibleSpace: FlexibleSpaceBar(
               background: CachedNetworkImage(
                 imageUrl: widget.DataFromCollection['ImageUrl'],
@@ -37,53 +40,15 @@ class _PrudactsRustState extends State<PrudactsRust> with SingleTickerProviderSt
             ),
             leading: Padding(
               padding: const EdgeInsets.only(left: 16),
-              child: InkWell(
-                onTap: (){
-                  Navigator.pop(context);
-                },
-                child: const CircleAvatar(
-                  backgroundColor: Colors.white,child: Icon(CupertinoIcons.back,color: Colors.black,),),
-              ),
+              child: Center(child: CloseWidget(w: w,icon: false)),
             ),
             actions: [
-              Container(
-                margin: const EdgeInsets.only(right: 10),
-                decoration: const BoxDecoration(shape: BoxShape.circle,color: Colors.white),
-                width: 40,height: 40,
-                child: Stack(
-                  children: [
-                    Positioned(
-                        top: 9,
-                        left: 15,
-                        child: Container(
-                          height: 20,
-                          width: 20,
-                          decoration: const BoxDecoration(color: Color.fromRGBO(0, 222, 207, 100), shape: BoxShape.circle),
-
-                          child: Center(child: Consumer<total>(
-                            builder: (context, value, child) {
-                              return Text(value.Num1().toString(),style: const TextStyle(fontSize: 15,color: Colors.black45),);
-                            },
-                          )),
-                        )),
-                    Positioned(
-                        top: 10,
-                        right: 2,
-                        left: 1,
-                        bottom: 10,
-                        child: IconButton(onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => const CartPage()));
-                        },
-                            icon: const Icon(CupertinoIcons.cart,
-                              color: Colors.black,))),
-                  ],
-                ),
-              )
+              CartWidget(h: w*0.1, w: w*0.1),
             ],
           ),
 
-          SliverList(delegate: SliverChildBuilderDelegate((context, index) {
+          SliverList(delegate: SliverChildBuilderDelegate(
+                  (context, index) {
             if(index.isOdd){return GridViewRust(Prudact: widget.DataFromCollection,Swich: true,Uid: '',);}
             else{return Container(
                 decoration: const BoxDecoration(
@@ -97,7 +62,7 @@ class _PrudactsRustState extends State<PrudactsRust> with SingleTickerProviderSt
                 width: double.infinity,
                 child: Center(child: Text(widget.DataFromCollection['Name'],
                   style: const TextStyle(fontSize: 35,fontWeight: FontWeight.bold,color: Colors.white),)));}
-          },childCount:2 )),
+          },childCount: 2 )),
         ],
       ),
     );

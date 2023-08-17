@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:halaapp/Pages/appPages/Sections/Restaurant/AddPrudactToCart.dart';
 
+import '../../../../models/DiscountDesgin.dart';
 import '../../../../models/add.dart';
 import '../detalspage.dart';
 
@@ -65,6 +66,8 @@ class GridViewRust extends StatelessWidget {
                               child: InkWell(
                                 borderRadius:BorderRadius.circular(15),
                                 onTap: (){
+                                  snapshot.data.docs[index]['Opitions'].length>=1?
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddToCartResturant1(Prudact1: snapshot.data.docs[index].data()))):
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -114,19 +117,18 @@ class GridViewRust extends StatelessWidget {
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) => AddToCartResturant1(Prudact1: snapshot.data.docs[index].data())));
                                                     },
                                                     child: Container(
-                                                      padding: const EdgeInsets.all(5),
-                                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
-                                                          gradient: const LinearGradient(
-                                                              begin: Alignment.centerLeft,
-                                                              end: Alignment.centerRight,
-                                                              colors: [
-                                                                Color.fromRGBO(56, 95, 172, 180),
-                                                                Color.fromRGBO(1, 183, 168, 180)
-                                                              ]
-                                                          )
-                                                      ),
-                                                      child: const Text("إضافة",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white),),
-                                                    ),
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.white70,
+                                                            borderRadius: BorderRadius.circular(5)),
+                                                        height: 35,
+                                                        width:  35,
+                                                        child:Center(
+                                                          child: Icon(
+                                                            Icons.add,
+                                                            color:Colors.teal,
+                                                            size:30,
+                                                          ),
+                                                        )),
                                                   ),
                                               )
                                           )
@@ -150,12 +152,17 @@ class GridViewRust extends StatelessWidget {
                                               ],
                                             ),
                                           )
-
                                           //Text('${snapshot.data!.docs[index]['Prise']-snapshot.data!.docs[index]['Discount']}'+' ₪',style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 18),),
                                         ],
                                       )
                                           :
                                       Text('${snapshot.data!.docs[index]['Prise']} ₪',style: const TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 18),),
+                                      snapshot.data!.docs[index]['Discount']>0?
+                                      Container(
+                                          width: wight/5.8,
+                                          child: DiscountWidget(Prise:  snapshot.data!.docs[index]['Prise'], Discount:snapshot.data!.docs[index]['Discount'] , Size1: 10))
+                                          :
+                                      const Text(''),
                                     ],
                                   ),
                                 ),

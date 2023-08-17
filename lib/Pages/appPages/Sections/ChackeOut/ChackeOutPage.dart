@@ -96,7 +96,7 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
           'Opitions':item.Opitions,
           'TybePrudact':item.TybePrudact,
           'IdUser':FirebaseAuth.instance.currentUser!.uid,
-
+          'OpitionSelected':item.OpitionSelected,
         };
 
         formattedList.add(formattedItem);
@@ -150,7 +150,7 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
           children: [
             //حبش 0
             //1
-            ElevatedButton(onPressed: () {print(Provaider.Products[1].Opitions);}, child: Text('test')),
+            ElevatedButton(onPressed: () {print(Provaider.listitem()[0].OpitionSelected);}, child: Text('test')),
             Container(
               margin: const EdgeInsets.all(16),
               height: 250,
