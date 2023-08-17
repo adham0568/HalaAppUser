@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:halaapp/Pages/appPages/Sections/Restaurant/ResturantCollection.dart';
 import 'package:halaapp/Pages/appPages/Sections/SearchPage.dart';
+import 'package:halaapp/models/snack.dart';
 import 'package:provider/provider.dart';
 import '../../../../provider/DataUser.dart';
 
@@ -96,7 +97,12 @@ class _RestaurantListState extends State<RestaurantList> {
                 children: [
                   InkWell(
                     borderRadius: BorderRadius.circular(12),
-                    onTap: () {},
+                    onTap: () {
+                      setState(() {
+                        Section=3;
+                        SelectSection=true;
+                      });
+                    },
                     child:Card(
                       elevation: 20,
                       shape: RoundedRectangleBorder(
@@ -141,7 +147,12 @@ class _RestaurantListState extends State<RestaurantList> {
                   ),
                   InkWell(
                     borderRadius: BorderRadius.circular(12),
-                    onTap: () {},
+                    onTap: () {
+                      setState(() {
+                        Section=4;
+                        SelectSection=true;
+                      });
+                    },
                     child:Card(
                       elevation: 20,
                       shape: RoundedRectangleBorder(
@@ -186,7 +197,9 @@ class _RestaurantListState extends State<RestaurantList> {
                   ),
                   InkWell(
                     borderRadius: BorderRadius.circular(12),
-                    onTap: () {},
+                    onTap: () {
+                      showSnackBar(context: context, text: 'سيتم توفير هذا الخيار قريباً', color1: Colors.teal);
+                    },
                     child:Card(
                       elevation: 20,
                       shape: RoundedRectangleBorder(

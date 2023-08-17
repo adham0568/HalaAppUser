@@ -12,6 +12,7 @@ import 'package:halaapp/provider/DataUser.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../models/Adds/ModelApp.dart';
+import '../models/snack.dart';
 import '../provider/CartProvider.dart';
 import '../provider/TotalPrudact.dart';
 import 'appPages/Cart/CartPage.dart';
@@ -22,7 +23,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-
+String addName='0';
 class _HomePageState extends State<HomePage> {
   Map<String, dynamic> ? dataUser;
   static Map<String, dynamic> Data = {};
@@ -33,38 +34,16 @@ bool DataGett1=false;
     Userdata userProvider = Provider.of(context, listen: false);
     await userProvider.refreshUser();
   }
-
-  List images = [];
-  bool waiting=false;
-
-  Future<Map<String, dynamic>?> GetDataFromFireBase() async {
-    try {
-      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-      await FirebaseFirestore.instance.collection('Pohto add').doc('HomePageAdd1').get();
-
-      if (documentSnapshot.exists) {
-        Map<String, dynamic> data = documentSnapshot.data()!;
-        setState(() {
-          images = data['Images']; // قم بتعيين القائمة images بقيمة images المسترجعة من Firestore
-          waiting = true;
-        });
-        return data;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      print('Error: $e');
-      return null;
-    }
-  }
   @override
   void initState() {
     getDataFromDB();
-    GetDataFromFireBase();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      addName='HomePageAdd2';
+    });
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
     final DataUser = Provider.of<Userdata>(context).getUser;
@@ -188,7 +167,7 @@ bool DataGett1=false;
                             ),
                             InkWell(
                               onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>const SoparMarker()));
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const SoparMarker()));
                               },
                               child: Container(
                                 width: w/3.5,
@@ -284,7 +263,7 @@ bool DataGett1=false;
                 const SizedBox(height: 70,),
                 Center(
                   child: Container(
-                      child:ImageAnimation2( DocumantName:'HomePageAdd2')
+                      child:ImageAnimation2(DocumantName:addName)
                   ),
                 ),
                 const SizedBox(height: 47,),
@@ -301,7 +280,9 @@ bool DataGett1=false;
                         children: [
                           InkWell(
                             borderRadius: BorderRadius.circular(12),
-                            onTap: () {},
+                            onTap: () {
+                              showSnackBar(context: context, text: 'سيتم توفير هذا الخيار قريباً', color1: Colors.teal);
+                            },
                             child: Column(
                               children: [
                                 Container(
@@ -315,13 +296,15 @@ bool DataGett1=false;
                                   ])),
                                   child: Icon(Icons.handshake,size: h/16,color: Colors.white,),
                                 ),
-                                const Text('اعمال الخير'),
+                                const Text('أعمال الخير'),
                               ],
                             ),
                           ),
                           InkWell(
                             borderRadius: BorderRadius.circular(12),
-                            onTap: () {},
+                            onTap: () {
+                              showSnackBar(context: context, text: 'سيتم توفير هذا الخيار قريباً', color1: Colors.teal);
+                            },
                             child: Column(
                               children: [
                                 Container(

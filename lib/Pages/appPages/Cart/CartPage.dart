@@ -63,23 +63,17 @@ class _CartPageState extends State<CartPage> {
                             margin: const EdgeInsets.all(9),
                             padding: const EdgeInsets.symmetric(vertical: 25),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                gradient: const LinearGradient(
-                                    begin: Alignment.topRight,
-                                    end: Alignment.bottomLeft,
-                                    colors: [
-                                      Color.fromRGBO(0, 123, 142, 1),
-                                      Color.fromRGBO(9, 167, 82, 1),
-                                    ])),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.teal,width: 1)
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                    height: 50,
-                                    width: 50,
+                                    height: SizeQ.wight(context: context)/6,
+                                    width: SizeQ.wight(context: context)/6,
                                     margin: const EdgeInsets.only(left: 5),
                                     decoration: BoxDecoration(
-                                        color: const Color.fromRGBO(193, 193, 193, 1),
                                         borderRadius:
                                             BorderRadius.circular(12)),
                                     child: ClipRRect(
@@ -95,8 +89,8 @@ class _CartPageState extends State<CartPage> {
                                         Text(
                                           cartItems[index].Name,
                                           style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.white,
+                                              fontSize: 18,
+                                              color: Colors.black,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Container(
@@ -119,8 +113,8 @@ class _CartPageState extends State<CartPage> {
                                 Text(
                                   cartItems[index].Name,
                                   style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.white,
+                                      fontSize: 18,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
@@ -134,8 +128,9 @@ class _CartPageState extends State<CartPage> {
                                   margin: const EdgeInsets.only(right: 9),
                                   height: 40,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Colors.white),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(color: Colors.black,width: 0.5)
+                                  ),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -203,8 +198,8 @@ class _CartPageState extends State<CartPage> {
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
                                   colors: [
-                                    Color.fromRGBO(56, 95, 172, 1),
-                                    Color.fromRGBO(1, 183, 168, 1)
+                                    Colors.teal,
+                                    Colors.cyanAccent
                                   ])),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

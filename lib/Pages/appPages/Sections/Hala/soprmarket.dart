@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:halaapp/Pages/appPages/Sections/SearchPage.dart';
+import 'package:halaapp/Pages/homepage.dart';
 import 'package:halaapp/models/Adds/ModelApp.dart';
+import 'package:halaapp/models/CartProvider.dart';
 import 'package:provider/provider.dart';
 import '../../../../provider/CartProvider.dart';
 import 'CollectionPage.dart';
@@ -16,37 +19,18 @@ class SoparMarker extends StatefulWidget {
   @override
   State<SoparMarker> createState() => _SoparMarkerState();
 }
+String addName='0';
 class _SoparMarkerState extends State<SoparMarker> {
   @override
   void initState() {
-    GetDataFromFireBase();
+    // TODO: implement initState
     super.initState();
-  }
-  List images = [];
-  bool waiting=false;
-
-  Future<Map<String, dynamic>?> GetDataFromFireBase() async {
-    try {
-      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-      await FirebaseFirestore.instance.collection('Pohto add').doc('HomePage').get();
-
-      if (documentSnapshot.exists) {
-        Map<String, dynamic> data = documentSnapshot.data()!;
-        setState(() {
-          images = data['Images']; // قم بتعيين القائمة images بقيمة images المسترجعة من Firestore
-          waiting = true;
-        });
-        return data;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      print('Error: $e');
-      return null;
-    }
   }
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      addName="E9gjtaIUHghyU0jneZZA";
+    });
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
 
@@ -54,6 +38,20 @@ class _SoparMarkerState extends State<SoparMarker> {
     final Provaider = Provider.of<CartProvider>(context);
     return waiting? Scaffold(
       appBar: AppBar(
+        actions: [CartWidget(h: w*0.1, w: w*0.1),],
+        leading:  InkWell(
+          borderRadius: BorderRadius.circular(100),
+          onTap: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(),));
+            },
+          child: Transform.scale(
+            scale:2,
+            child: Icon(
+              CupertinoIcons.back,
+              color: Colors.white,
+            ),
+          ),
+        ),
         title: Image.asset('assets/Img/logowelcome.png'),
         flexibleSpace: Container(
           decoration: const BoxDecoration(gradient: LinearGradient(
@@ -92,7 +90,7 @@ class _SoparMarkerState extends State<SoparMarker> {
             ),
             Center(
               child: Container(
-                child:ImageAnimation2(DocumantName: "E9gjtaIUHghyU0jneZZA")/*ImageAnimation(images: images)*/
+                child:ImageAnimation2(DocumantName: addName)
               ),
             ),
             const SizedBox(height: 40,),
@@ -224,47 +222,3 @@ class _SoparMarkerState extends State<SoparMarker> {
 }
 
 
-
- /*GridView(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,crossAxisSpacing: 7,mainAxisSpacing: 5,mainAxisExtent: 150),
-                        children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                          return InkWell(
-                          borderRadius: BorderRadius.circular(12),
-                          splashColor: Colors.teal,
-                          onTap: () {
-                           // _Provaider.updateXID('C1zSXr7C9DW3MHN9tsbBiNRSu3g2');
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => CollectionPage(DataFromCollection: data,)/*PrudactPage(DataFromeCollection: data,)*/));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.only(top: 5),
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(50, 50, 50, 10),
-                                borderRadius: BorderRadius.circular(12)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CachedNetworkImage(
-                                  imageUrl: data['ImageUrl'],
-                                  placeholder: (context, url) => CircularProgressIndicator(color: Colors.red),
-                                  errorWidget: (context, url, error) => Icon(Icons.error),
-                                  imageBuilder: (context, imageProvider) => Container(
-                                    height: 105,
-                                    width: 140,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                 Center(child: Text(data['Name'],style: TextStyle(fontSize:18,fontWeight: FontWeight.bold,color: Colors.black),))
-                              ],
-                            ),
-                          ),
-                          );
-                        }).toList(),
-                      )*/

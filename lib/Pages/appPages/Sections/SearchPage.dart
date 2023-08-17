@@ -124,7 +124,8 @@ class _SearchPageState extends State<SearchPage> {
                   .where('Name', isGreaterThanOrEqualTo: Search.text).where('Name', isLessThan: '${Search.text}ي')
                   .snapshots()
                   :
-              FirebaseFirestore.instance.collection('AdminData').where('Name', isGreaterThanOrEqualTo: Search.text).where('Name', isLessThan: '${Search.text}ي').
+              FirebaseFirestore.instance.collection('AdminData').where('Location',isEqualTo:DataUser!.City).
+              where('Name', isGreaterThanOrEqualTo: Search.text).where('Name', isLessThan: '${Search.text}ي').
               where('Name',isNotEqualTo:'Hala Mart' )
                   .snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
