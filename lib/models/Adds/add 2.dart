@@ -7,16 +7,16 @@ import 'package:halaapp/Pages/appPages/Sections/SearchPage.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 
-class ImageAnimation2 extends StatefulWidget {
+class ImageAnimation extends StatefulWidget {
   String DocumantName;
-  ImageAnimation2({required this.DocumantName,Key? key}) : super(key: key);
+  ImageAnimation({required this.DocumantName,Key? key}) : super(key: key);
 
   @override
-  State<ImageAnimation2> createState() => _ImageAnimation2State();
+  State<ImageAnimation> createState() => _ImageAnimationState();
 }
 List? images;
 bool waiting=false;
-class _ImageAnimation2State extends State<ImageAnimation2> {
+class _ImageAnimationState extends State<ImageAnimation> {
   int _currentIndex = 0;
   Future<Map<String, dynamic>?> GetDataFromFireBase() async {
     try {

@@ -13,7 +13,7 @@ class GridView2 extends StatelessWidget {
   GridView2({super.key, required this.Prudact});
   @override
   Widget build(BuildContext context) {
-
+    double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     int columnCount = 3;
     return FutureBuilder(
@@ -40,7 +40,7 @@ class GridView2 extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.all(w / 60),
                       crossAxisCount: 2,
-                      childAspectRatio: 80/90,
+                      childAspectRatio: h*3.5/w*0.1,
                       mainAxisSpacing: 10,
                       children: List.generate(
                         snapshot.data!.docs.length, (int index) {

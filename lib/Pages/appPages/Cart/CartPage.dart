@@ -103,7 +103,7 @@ class _CartPageState extends State<CartPage> {
                                             itemBuilder: (context, index1) => Align(
                                             child: Text(
                                                 cartItems[index].Opitions[index1]['subOptions'][cartItems[index].OpitionSelected[index1]]['optionName']
-                                                    ,style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w100),
+                                                    ,style: TextStyle(color: Colors.black,fontSize: 15,fontWeight: FontWeight.w100),
                                             ),
                                           ),),
                                         )

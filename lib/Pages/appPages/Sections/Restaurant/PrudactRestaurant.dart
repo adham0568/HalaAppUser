@@ -46,7 +46,7 @@ class GridViewRust extends StatelessWidget {
                 SizedBox(
                   child:AnimationLimiter(
                     child: GridView.count(
-                      childAspectRatio:60/70,
+                      childAspectRatio: hight*3.5/wight*0.1,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.all(wight / 60),

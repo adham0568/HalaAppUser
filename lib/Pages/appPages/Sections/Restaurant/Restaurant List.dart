@@ -431,50 +431,46 @@ class _RestaurantListState extends State<RestaurantList> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Stack(
-                                  children: [
-                                    SizedBox(
-                                      height: hight / 6,
-                                      width: wight * 95,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: CachedNetworkImage(
-                                          imageUrl: snapshot.data!.docs[index]['ImageProfile'],
-                                          placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
-                                          errorWidget: (context, url, error) => const Icon(Icons.error),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
+                                SizedBox(
+                                  height: hight / 6,
+                                  width: wight * 95,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: snapshot.data!.docs[index]['ImageProfile'],
+                                      placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                                      fit: BoxFit.cover,
                                     ),
-                                    snapshot.data!.docs[index]['Offar'] > 0
-                                        ? Container(
-                                      width: w / 3,
-                                      height: hight / 8.5,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Colors.teal.withOpacity(0.5),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                            'خصومات بقيمة',
-                                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
-                                          ),
-                                          Text(
-                                            '₪ ${snapshot.data!.docs[index]['Offar']}',
-                                            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.orange, fontSize: 25),
-                                          ),
-                                          const Text(
-                                            'على اصناف مختارة',
-                                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                        : const SizedBox(height: 1, width: 1),
-                                  ],
+                                  ),
                                 ),
+                                snapshot.data!.docs[index]['Offar'] > 0
+                                    ? Container(
+                                  padding: EdgeInsets.symmetric(horizontal: w/17),
+                                  width: w ,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: Colors.pink.withOpacity(0.2),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'على اصناف مختارة',
+                                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
+                                      ),
+                                      Text(
+                                        '₪ ${snapshot.data!.docs[index]['Offar']}',
+                                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.pinkAccent, fontSize: 25),
+                                      ),
+                                      const Text(
+                                        'خصومات بقيمة',
+                                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                                    : const SizedBox(height: 1, width: 1),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [

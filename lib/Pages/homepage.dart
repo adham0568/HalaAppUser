@@ -12,6 +12,7 @@ import 'package:halaapp/provider/DataUser.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../models/Adds/ModelApp.dart';
+import '../models/Adds/add 2.dart';
 import '../models/snack.dart';
 import '../provider/CartProvider.dart';
 import '../provider/TotalPrudact.dart';
@@ -22,7 +23,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
+String addName1='0';
 String addName='0';
 class _HomePageState extends State<HomePage> {
   Map<String, dynamic> ? dataUser;
@@ -43,6 +44,7 @@ bool DataGett1=false;
   Widget build(BuildContext context) {
     setState(() {
       addName='HomePageAdd2';
+      addName1='addName1';
     });
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
@@ -107,33 +109,9 @@ bool DataGett1=false;
           body: SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 20,),
-                Container(
-                  decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15),
-                  boxShadow: const [
-                    BoxShadow(color: Colors.black26,offset: Offset(10,10),blurRadius: 5,spreadRadius: 2)
-                  ]
-                  ),
-                  width: SizeFix().wight(context: context)*0.98,
-                  child: Column(
-                    children: [
-                      Container(
-                        child: Lottie.asset('assets/lottie/wlecome.json'),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(DataUser.Name,style: const TextStyle(fontSize: 30,color: Colors.teal,fontFamily:'Name' ),),
-                              const SizedBox(width: 5,),
-                              const Text('يا هلا',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.teal),),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                Center(
+                  child: Container(
+                      child:ImageAnimation2(DocumantName:'HomePage')
                   ),
                 ),
                 const SizedBox(height: 47,),
@@ -263,7 +241,7 @@ bool DataGett1=false;
                 const SizedBox(height: 70,),
                 Center(
                   child: Container(
-                      child:ImageAnimation2(DocumantName:addName)
+                      child:ImageAnimation(DocumantName:'HomePageAdd2')
                   ),
                 ),
                 const SizedBox(height: 47,),
@@ -316,9 +294,9 @@ bool DataGett1=false;
                                             Color.fromRGBO(56, 95, 172, 1),
                                             Color.fromRGBO(1, 183, 168, 1)
                                           ])),
-                                  child: Icon(Icons.hotel_class,size: h/16,color: Colors.white,),
+                                  child: Icon(Icons.food_bank_outlined,size: h/16,color: Colors.white,),
                                 ),
-                                const Text('جديد'),
+                                const Text('اكيلة الشورما'),
                               ],
                             ),
                           ),

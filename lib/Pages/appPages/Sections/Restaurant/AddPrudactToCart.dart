@@ -305,6 +305,8 @@ ResetValue(){
                                           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
                                               ElevatedButton(onPressed: (){
+                                                Provaider.Products.clear();
+                                                Provaider.listitem().clear();
                                                 Provaider.xid1=myItems!.IdMarket;
                                                 myItems!.Prise=myItems!.Prise+additionPrise;
                                                 Provaider.addPrudact(item: myItems!);
@@ -317,9 +319,13 @@ ResetValue(){
                                                 Provaider1.Num=1;
                                                 Navigator.pop(context);
                                               },
-                                                  style:ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal),overlayColor: MaterialStateProperty.all(Colors.red)), child: const Text('تأكيد البدء',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
+                                                  style:ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal),
+                                                      overlayColor: MaterialStateProperty.all(Colors.red)),
+                                                  child: const Text('تأكيد البدء',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
                                               ElevatedButton(onPressed: (){Navigator.pop(context);},
-                                                  style:ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white),overlayColor: MaterialStateProperty.all(Colors.green)), child: const Text('الغاء',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.teal),)),
+                                                  style:ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white),
+                                                      overlayColor: MaterialStateProperty.all(Colors.green)),
+                                                  child: const Text('الغاء',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.teal),)),
                                             ],
                                           )
                                         ],

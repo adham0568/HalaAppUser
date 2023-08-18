@@ -78,6 +78,8 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                     Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ElevatedButton(onPressed: (){
+                          Provaider.Products.clear();
+                          Provaider.listitem().clear();
                           Provaider.xid1=myItems!.IdMarket;
                           Provaider.addPrudact(item: myItems!);
                           print(Provaider.xid1);
