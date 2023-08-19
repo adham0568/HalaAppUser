@@ -45,6 +45,7 @@ class _ImageAnimation2State extends State<ImageAnimation2> {
     return waiting?
     Column(
       children: [
+        ElevatedButton(onPressed: () {}, child: Text('Test')),
         Center(
           child: Container(
             child: Column(

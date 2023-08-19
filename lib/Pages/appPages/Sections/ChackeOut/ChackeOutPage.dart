@@ -87,7 +87,7 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
       for (var item in Provaider.Products) {
         Map<String, dynamic> formattedItem = {
           'Name': item.Name,
-          'IdCollection': item.IdCollection,
+          //'IdCollection': item.IdCollection,
           'IdMainCollection': item.IdMainCollection,
           'IdPrudact': item.IdPrudact,
           'ImageUrl': item.ImageUrl,

@@ -71,7 +71,7 @@ ResetValue(){
       IdMarket: widget.Prudact1['IdMarket'],
       Discount: widget.Prudact1['Discount'],
       Name: widget.Prudact1['Name'],
-      IdCollection: widget.Prudact1['IdCollection'],
+      //IdCollection: widget.Prudact1['IdCollection'],
       IdMainCollection: widget.Prudact1['IdMainCollection'],
       IdPrudact: widget.Prudact1['IdPrudact'],
       ImageUrl: widget.Prudact1['ImageUrl'],

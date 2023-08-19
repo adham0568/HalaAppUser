@@ -24,7 +24,7 @@ class GridViewRust extends StatelessWidget {
     return FutureBuilder(
       future:Swich? FirebaseFirestore.instance
           .collection('Prudacts')
-          .where('IdCollection', isEqualTo:Prudact['IdCollection'])
+          .where('IdMainCollection', isEqualTo:Prudact['IdPrudactMainCollection'])
           .get()
           :
       FirebaseFirestore.instance
@@ -110,8 +110,10 @@ class GridViewRust extends StatelessWidget {
                                           Positioned(
                                               bottom: 2,
                                               left: 25,
-                                              child:Container(decoration: BoxDecoration(color:Colors.black54,borderRadius: BorderRadius.circular(5)),
-                                                  child:snapshot.data!.docs[index]['TybePrudact']<1? AddToCartWidget(Prudact:snapshot.data.docs[index].data(),ColorIcon: Colors.teal,SizeIcon: 30,):
+                                              child:Container(decoration:
+                                              BoxDecoration(color:Colors.black54,borderRadius: BorderRadius.circular(5)),
+                                                  child:snapshot.data!.docs[index]['TybePrudact']<1?
+                                                  AddToCartWidget(Prudact:snapshot.data.docs[index].data(),ColorIcon: Colors.teal,SizeIcon: 30,):
                                                   InkWell(
                                                     onTap: () {
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) => AddToCartResturant1(Prudact1: snapshot.data.docs[index].data())));

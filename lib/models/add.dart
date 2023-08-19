@@ -24,7 +24,7 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
         IdMarket: widget.Prudact['IdMarket'],
         Discount: widget.Prudact['Discount'],
         Name: widget.Prudact['Name'],
-        IdCollection: widget.Prudact['IdCollection'],
+       // IdCollection: widget.Prudact['IdCollection'],
         IdMainCollection: widget.Prudact['IdMainCollection'],
         IdPrudact: widget.Prudact['IdPrudact'],
         ImageUrl: widget.Prudact['ImageUrl'],

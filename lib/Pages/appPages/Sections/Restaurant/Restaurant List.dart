@@ -406,8 +406,7 @@ class _RestaurantListState extends State<RestaurantList> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ResturntCollection(
-                                  ResturntData: snapshot.data!.docs[index].data()! as Map<String, dynamic>,
+                                builder: (context) => ResturntCollection(ResturntData: snapshot.data!.docs[index].data()! as Map<String, dynamic>,
                                 ),
                               ),
                             );

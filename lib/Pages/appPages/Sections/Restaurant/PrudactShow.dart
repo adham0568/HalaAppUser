@@ -10,9 +10,9 @@ import '../../Cart/CartPage.dart';
 import 'PrudactRestaurant.dart';
 
 class PrudactsRust extends StatefulWidget {
-  Map DataFromCollection;
+  Map DataFromMainCollection;
 
-  PrudactsRust({super.key, required this.DataFromCollection});
+  PrudactsRust({super.key, required this.DataFromMainCollection});
   @override
   State<PrudactsRust> createState() => _PrudactsRustState();
 }
@@ -33,7 +33,7 @@ class _PrudactsRustState extends State<PrudactsRust> with SingleTickerProviderSt
             backgroundColor: Colors.white,
             flexibleSpace: FlexibleSpaceBar(
               background: CachedNetworkImage(
-                imageUrl: widget.DataFromCollection['ImageUrl'],
+                imageUrl: widget.DataFromMainCollection['Image'],
                 placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
@@ -49,7 +49,7 @@ class _PrudactsRustState extends State<PrudactsRust> with SingleTickerProviderSt
 
           SliverList(delegate: SliverChildBuilderDelegate(
                   (context, index) {
-            if(index.isOdd){return GridViewRust(Prudact: widget.DataFromCollection,Swich: true,Uid: '',);}
+            if(index.isOdd){return GridViewRust(Prudact: widget.DataFromMainCollection,Swich: true,Uid: '',);}
             else{return Container(
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(begin: Alignment.centerLeft,
@@ -60,7 +60,7 @@ class _PrudactsRustState extends State<PrudactsRust> with SingleTickerProviderSt
                           Color.fromRGBO(1, 183, 168, 1)
                         ])),
                 width: double.infinity,
-                child: Center(child: Text(widget.DataFromCollection['Name'],
+                child: Center(child: Text(widget.DataFromMainCollection['Name'],
                   style: const TextStyle(fontSize: 35,fontWeight: FontWeight.bold,color: Colors.white),)));}
           },childCount: 2 )),
         ],

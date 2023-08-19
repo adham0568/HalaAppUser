@@ -66,8 +66,11 @@ class _ImageAnimationState extends State<ImageAnimation> {
                           aspectRatio: 100 / 10, // تحديد نسبة العرض إلى الارتفاع هنا
                           child: GestureDetector(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(whichPage: true, Name: 'Name',NamePrudact:imagePath['PrudactName'] ),));
-                              print(imagePath['PrudactName']);
+                              imagePath['TybePrudact']>0?
+
+                                  :
+                              Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                  SearchPage(whichPage: true, Name: 'Name',NamePrudact:imagePath['PrudactName'] ),));
                             },
                             child: Container(
                               margin: const EdgeInsets.only(left: 5, right: 5),

@@ -148,12 +148,12 @@ class _ResturntCollectionState extends State<ResturntCollection> {
                             ),
                           ),
                         ),
-                        StreamBuilder(
+                        StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
-                              .collection('Collection')
+                              .collection('mainCollection')
                               .where('UidAdmin', isEqualTo: widget.ResturntData['Uid'])
                               .snapshots(),
-                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (snapshot.hasError) {
                               return const Text('Something went wrong');
                             }
@@ -161,6 +161,7 @@ class _ResturntCollectionState extends State<ResturntCollection> {
                             if (snapshot.connectionState == ConnectionState.waiting) {
                               return const Text("Loading");
                             }
+
 
                             return ListView(
                               shrinkWrap: true,
@@ -180,7 +181,7 @@ class _ResturntCollectionState extends State<ResturntCollection> {
                                         padding: EdgeInsets.all(w / 60),
                                         crossAxisCount: 3,
                                         children: List.generate(
-                                          snapshot.data.docs.length,
+                                          snapshot.data!.docs.length,
                                               (int index) {
                                             return AnimationConfiguration.staggeredGrid(
                                               position: index,
@@ -195,7 +196,9 @@ class _ResturntCollectionState extends State<ResturntCollection> {
                                                     splashColor: Colors.teal,
                                                     borderRadius: BorderRadius.circular(15),
                                                     onTap: () {
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => PrudactsRust(DataFromCollection:snapshot.data!.docs[index].data()! as Map<String, dynamic>),));
+                                                      Navigator.push(context,
+                                                          MaterialPageRoute(builder: (context) =>
+                                                              PrudactsRust(DataFromMainCollection:snapshot.data!.docs[index].data()! as Map<String, dynamic>),));
                                                     },
                                                     child: Container(
                                                       margin: EdgeInsets.only(
@@ -227,7 +230,7 @@ class _ResturntCollectionState extends State<ResturntCollection> {
                                                             height: 100,
                                                             width: double.infinity,
                                                             child: CachedNetworkImage(
-                                                              imageUrl: snapshot.data!.docs[index]['ImageUrl'],
+                                                              imageUrl: snapshot.data!.docs[index]['Image'],
                                                               placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
                                                               errorWidget: (context, url, error) => const Icon(Icons.error),
                                                             ),
