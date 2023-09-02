@@ -9,7 +9,7 @@ import 'DiscountDesgin.dart';
 import 'add.dart';
 
 class GridView2 extends StatelessWidget {
-  Map Prudact;
+  String Prudact;
   GridView2({super.key, required this.Prudact});
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class GridView2 extends StatelessWidget {
     return FutureBuilder(
       future: FirebaseFirestore.instance
           .collection('Prudacts')
-          .where('IdMainCollection', isEqualTo:Prudact['IdPrudactMainCollection'])
+          .where('IdMainCollection', isEqualTo:Prudact)
           .get(),
       builder:
           (BuildContext context, AsyncSnapshot snapshot) {
@@ -40,7 +40,7 @@ class GridView2 extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.all(w / 60),
                       crossAxisCount: 2,
-                      childAspectRatio: h*3.5/w*0.1,
+                      childAspectRatio: h*4/w*0.1,
                       mainAxisSpacing: 10,
                       children: List.generate(
                         snapshot.data!.docs.length, (int index) {
@@ -71,30 +71,33 @@ class GridView2 extends StatelessWidget {
                                       children: [
                                          Stack(
                                           children: [
-                                            Center(
-                                              child: CachedNetworkImage(
-                                                imageUrl: snapshot.data!.docs[index]['ImageUrl'],
-                                                placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
-                                                errorWidget: (context, url, error) => const Icon(Icons.error),
-                                                imageBuilder: (context, imageProvider) => Container(
-                                                  height: 125,
-                                                  width: 140,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(12),
-                                                    image: DecorationImage(
-                                                      image: imageProvider,
-                                                      fit: BoxFit.contain,
+                                            snapshot.data!.docs[index]['Discount']>0?
+                                            Container(
+                                                width: w/5.8,
+                                                child: DiscountWidget(Prise:snapshot.data!.docs[index]['Prise'], Discount:snapshot.data!.docs[index]['Discount'] , Size1: 10))
+                                                :
+                                            const Text(''),
+                                            Container(
+                                              margin: EdgeInsets.only(top: w/16),
+                                              child: Center(
+                                                child: CachedNetworkImage(
+                                                  imageUrl: snapshot.data!.docs[index]['ImageUrl'],
+                                                  placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
+                                                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                  imageBuilder: (context, imageProvider) => Container(
+                                                    height: w/5,
+                                                    width: w/5,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(12),
+                                                      image: DecorationImage(
+                                                        image: imageProvider,
+                                                        fit: BoxFit.contain,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                            Positioned(
-                                                bottom: 2,
-                                                left: 25,
-                                                child:Container(decoration: BoxDecoration(color:Colors.black54,borderRadius: BorderRadius.circular(5)),
-                                                    child: AddToCartWidget(Prudact:snapshot.data.docs[index].data(),ColorIcon: Colors.teal,SizeIcon: 30,))
-                                            )
                                           ],
                                         ),
                                         Text(snapshot.data!.docs[index]['Name'],style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
@@ -106,28 +109,22 @@ class GridView2 extends StatelessWidget {
                                             RichText(
                                               text: TextSpan(
                                                 text:' ₪''${snapshot.data!.docs[index]['Prise']-snapshot.data!.docs[index]['Discount']} / ',
-                                                style: const TextStyle(fontSize: 30,color: Colors.red,fontWeight: FontWeight.bold,), // يمكنك استخدام أسلوب النص الافتراضي
+                                                style: TextStyle(fontSize: w/18,color: Colors.red,fontWeight: FontWeight.bold,), // يمكنك استخدام أسلوب النص الافتراضي
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                     text: '${snapshot.data!.docs[index]['Prise']} ₪',
-                                                    style: const TextStyle(decoration: TextDecoration.lineThrough,fontSize: 25,color: Colors.grey),
+                                                    style: TextStyle(decoration: TextDecoration.lineThrough,fontSize: w/18,color: Colors.grey),
                                                   ),
                                                 ],
                                               ),
                                             )
-
                                             //Text('${snapshot.data!.docs[index]['Prise']-snapshot.data!.docs[index]['Discount']}'+' ₪',style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 18),),
                                           ],
                                         )
                                             :
                                         Text('${snapshot.data!.docs[index]['Prise']} ₪',style: const TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 18),),
-                                        snapshot.data!.docs[index]['Discount']>0?
-                                        Container(
-                                            width: w/5.8,
-                                            child: DiscountWidget(Prise:  snapshot.data!.docs[index]['Prise'], Discount:snapshot.data!.docs[index]['Discount'] , Size1: 10))
-                                            :
-                                        const Text(''),
-
+                                        Container(decoration: BoxDecoration(color:Colors.black54,borderRadius: BorderRadius.circular(5)),
+                                            child: AddToCartWidget(Prudact:snapshot.data.docs[index].data(),ColorIcon: Colors.teal,SizeIcon: 30,)),
                                       ],
                                     ),
                                   ),

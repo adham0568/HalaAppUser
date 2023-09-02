@@ -7,16 +7,16 @@ import 'package:halaapp/Pages/appPages/Sections/SearchPage.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 
-class ImageAnimation2 extends StatefulWidget {
+class ImageAnimation extends StatefulWidget {
   String DocumantName;
-  ImageAnimation2({required this.DocumantName,Key? key}) : super(key: key);
+  ImageAnimation({required this.DocumantName,Key? key}) : super(key: key);
 
   @override
-  State<ImageAnimation2> createState() => _ImageAnimation2State();
+  State<ImageAnimation> createState() => _ImageAnimationState();
 }
-List? images;
-bool waiting=false;
-class _ImageAnimation2State extends State<ImageAnimation2> {
+class _ImageAnimationState extends State<ImageAnimation> {
+  List? images;
+  bool waiting=false;
   int _currentIndex = 0;
   Future<Map<String, dynamic>?> GetDataFromFireBase() async {
     try {
@@ -45,7 +45,6 @@ class _ImageAnimation2State extends State<ImageAnimation2> {
     return waiting?
     Column(
       children: [
-        ElevatedButton(onPressed: () {}, child: Text('Test')),
         Center(
           child: Container(
             child: Column(
@@ -67,8 +66,8 @@ class _ImageAnimation2State extends State<ImageAnimation2> {
                           aspectRatio: 100 / 10, // تحديد نسبة العرض إلى الارتفاع هنا
                           child: GestureDetector(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(whichPage: true, Name: 'Name',NamePrudact:imagePath['PrudactName'] ),));
-                              print(imagePath['PrudactName']);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                  SearchPage(whichPage: true, Name: 'Name',NamePrudact:imagePath['PrudactName'] ),));
                             },
                             child: Container(
                               margin: const EdgeInsets.only(left: 5, right: 5),

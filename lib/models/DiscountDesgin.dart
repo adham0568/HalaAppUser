@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class DiscountWidget extends StatefulWidget {
   double Size1;
-  int Prise;
-  int Discount;
+  double Prise;
+  double Discount;
   DiscountWidget({required this.Prise,required this.Discount,required this.Size1,Key? key}) : super(key: key);
 
   @override

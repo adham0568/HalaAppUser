@@ -1,10 +1,14 @@
 
 class Item{
   String Name,/*IdCollection,*/IdMainCollection,ImageUrl,PrudactsDetals,IdMarket;
-  int Discount,Prise,IdPrudact,TybePrudact;
+  int IdPrudact,TybePrudact,Count_Quantity,Count_requests;
+  double Discount,Prise;
   List Opitions,OpitionSelected;
   Item(
-      {required this.IdMarket,
+      {
+      required this.Count_Quantity,
+      required this.Count_requests,
+      required this.IdMarket,
       required this.Name,
      // required this.IdCollection,
       required this.IdMainCollection,

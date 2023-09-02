@@ -23,7 +23,7 @@ class CartProvider with ChangeNotifier {
 
   RemoveToCart(Item item,int idToDelete) {
     for (int i = 0; i < Products.length; i++) {
-      if (Products[i].IdPrudact == idToDelete &&Products[i].OpitionSelected==item.OpitionSelected) {
+      if (Products[i].IdPrudact == idToDelete /*&&Products[i].OpitionSelected==item.OpitionSelected*/) {
         Products.removeAt(i);
         break;
       }
@@ -42,7 +42,7 @@ class CartProvider with ChangeNotifier {
         bool shouldAdd = true;
 
         for (Item existingItem in existingItems) {
-          if (existingItem.OpitionSelected == item.OpitionSelected) {
+          if (existingItem.IdPrudact == item.IdPrudact/*existingItem.OpitionSelected == item.OpitionSelected*/) { /*الحل الصحيح هو existingItem.IdPrudact == item.IdPrudact*/
             shouldAdd = false;
             break;
           }
@@ -58,12 +58,10 @@ class CartProvider with ChangeNotifier {
 
     return result;
   }
-
-
   GetNumberByProducts(Item item) {
     int Numproducts = 0;
     for (int i = 0; i < Products.length; i++) {
-      if (Products[i].IdPrudact == item.IdPrudact && Products[i].OpitionSelected==item.OpitionSelected) {
+      if (Products[i].IdPrudact == item.IdPrudact/* && Products[i].OpitionSelected==item.OpitionSelected*/) {
         Numproducts++;
       }
     }
@@ -75,13 +73,25 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  int PirseCalculating(){
-    int Prise=0;
+  bool bool_In({required int Id}){
+    bool In=false;
+    for(int i=0;i<IdPrudacts.length;i++){
+      if(IdPrudacts[i]==Id){
+        In=true;
+        break;
+      }
+    }
+    return In;
+  }
+
+
+  double PirseCalculating(){
+    double Prise=0;
     for(int i=0;i<Products.length;i++){
-      int _prise=Products[i].Prise;
+      double _prise=Products[i].Prise;
       Prise+=_prise;
     }
     return Prise;
   }
 }
-//
+

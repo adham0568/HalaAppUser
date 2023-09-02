@@ -14,11 +14,6 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
   SizeFix SizeQ=SizeFix();
   @override
   Widget build(BuildContext context) {
@@ -53,7 +48,7 @@ class _CartPageState extends State<CartPage> {
                   height: 10,
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 63 / 80,
+                  height: MediaQuery.of(context).size.height * 0.75,
                   child: ListView.builder(
                     itemCount: cartItems.length,
                     itemBuilder: (context, index) {
@@ -83,7 +78,7 @@ class _CartPageState extends State<CartPage> {
                                           placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
                                           errorWidget: (context, url, error) => const Icon(Icons.error),
                                         ),)),
-                                cartItems[index].OpitionSelected.length>=1?
+                                      cartItems[index].OpitionSelected.length>=1?
                                     Column(
                                       children: [
                                         Text(

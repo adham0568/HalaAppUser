@@ -49,7 +49,7 @@ class _PrudactsRustState extends State<PrudactsRust> with SingleTickerProviderSt
 
           SliverList(delegate: SliverChildBuilderDelegate(
                   (context, index) {
-            if(index.isOdd){return GridViewRust(Prudact: widget.DataFromMainCollection,Swich: true,Uid: '',);}
+            if(index.isOdd){return GridViewRust(Prudact: widget.DataFromMainCollection,Swich: true,Uid: '',WhichPage: false,);}
             else{return Container(
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(begin: Alignment.centerLeft,

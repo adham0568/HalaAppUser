@@ -15,12 +15,14 @@ class AddToCartWidget extends StatefulWidget {
   @override
   State<AddToCartWidget> createState() => _AddToCartWidgetState();
 }
-bool add = false;
 
 class _AddToCartWidgetState extends State<AddToCartWidget> {
+  bool add = false;
   @override
   void initState() {
     myItems = Item(
+        Count_requests:widget.Prudact['Count_requests'],
+        Count_Quantity:widget.Prudact['Count_Quantity'],
         IdMarket: widget.Prudact['IdMarket'],
         Discount: widget.Prudact['Discount'],
         Name: widget.Prudact['Name'],
@@ -34,6 +36,7 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
         Opitions: widget.Prudact['Opitions'],
         OpitionSelected: [],
     );
+
     // TODO: implement initState
     super.initState();
   }
@@ -46,22 +49,24 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
   Widget build(BuildContext context) {
     final Provaider = Provider.of<CartProvider>(context);
     final Provaider1 = Provider.of<total>(context);
-
+    double h = MediaQuery.of(context).size.height;
+    double w = MediaQuery.of(context).size.width;
     Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
+
     return InkWell(
       onTap: () {
         if(Provaider.Products.isNotEmpty){
           if(Provaider.Products.first.IdMarket==myItems!.IdMarket){
           Provaider.addPrudact(item: myItems!);
-          print(Provaider.IdPrudacts);
           Provaider1.addNum();
           _width = 140;
           _height = 30;
           setState(() {
             Provaider.AddToCart(item: myItems!);
+            Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
+            Provaider.GetNumberByProducts(myItems!) + 1;
+
           });
-          Provaider.GetNumberByProducts(myItems!) + 1;
-          Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
           }
           else if(Provaider.Products.first.IdMarket!=myItems!.IdMarket){
             showDialog(context: context, builder: (context) => AlertDialog(
@@ -88,9 +93,9 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                           _height = 30;
                           setState(() {
                             Provaider.AddToCart(item: myItems!);
+                            Provaider.GetNumberByProducts(myItems!) + 1;
+                            Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
                           });
-                          Provaider.GetNumberByProducts(myItems!) + 1;
-                          Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
                           Provaider1.Num=1;
                           Navigator.pop(context);
                         },
@@ -114,22 +119,23 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
           _height = 30;
           setState(() {
             Provaider.AddToCart(item: myItems!);
+            Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
+            Provaider.GetNumberByProducts(myItems!) + 1;
           });
-          Provaider.GetNumberByProducts(myItems!) + 1;
-          Provaider.GetNumberByProducts(myItems!) > 0 ? add = true : add = false;
         }
 
       },
-      child: add
-          ? Container(
-              height: 40,
-              width: 130,
+      child: add ?
+      Container(
+              width: w/3.3,
+              height: w/12,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: Colors.white70),
+                  color: Colors.black26,
+              ),
               child: Center(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
                         onPressed: () {
@@ -143,16 +149,17 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                             });});
                           });
                         },
-                        icon:const Icon(
+                        icon:Icon(
+                          size:w/20,
                           Icons.add,
-                          color: Colors.teal,
+                          color: Colors.white,
                         )),
                     Text(
                       Provaider.GetNumberByProducts(myItems!).toString(),
-                      style: const TextStyle(
-                          color: Colors.black,
+                      style: TextStyle(
+                          color: Colors.pink,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18),
+                          fontSize: w/20),
                     ),
                     IconButton(
                         onPressed: () {
@@ -163,22 +170,25 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
                             Provaider.RemoveToCart(myItems!,myItems!.IdPrudact);
                           });
                         },
-                        icon: const Icon(
+                        icon: Icon(
+                          size:w/20,
                           Icons.remove,
-                          color: Colors.teal,
+                          color: Colors.white,
                         )),
+
                   ],
                 ),
               ),
             )
-          : Container(
+          :
+      Container(
               decoration: BoxDecoration(
                   color: Provaider.GetNumberByProducts(myItems!) >= 1
                       ? Colors.tealAccent
                       : Colors.white70,
                   borderRadius: BorderRadius.circular(5)),
-              height: widget.SizeIcon+5,
-              width:  widget.SizeIcon+5,
+              height: widget.SizeIcon-2,
+              width:  widget.SizeIcon-2,
               child:Center(
                 child: Icon(
                   Icons.add,

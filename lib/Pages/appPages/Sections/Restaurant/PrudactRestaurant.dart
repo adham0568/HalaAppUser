@@ -14,15 +14,25 @@ class GridViewRust extends StatelessWidget {
   Map Prudact;
   bool Swich;
   String Uid;
-  GridViewRust({super.key, required this.Prudact,required this.Swich,required this.Uid});
+  bool WhichPage;
+  GridViewRust({super.key, required this.Prudact,required this.Swich,required this.Uid,required this.WhichPage});
   @override
   Widget build(BuildContext context) {
 
-    double hight= MediaQuery.of(context).size.height;
-    double wight= MediaQuery.of(context).size.width;
+    double h= MediaQuery.of(context).size.height;
+    double w= MediaQuery.of(context).size.width;
     int columnCount = 3;
     return FutureBuilder(
-      future:Swich? FirebaseFirestore.instance
+      future:
+      WhichPage?
+      FirebaseFirestore.instance
+          .collection('Prudacts')
+          .where('IdMarket', isEqualTo: Uid)
+          .where('Count_requests',isGreaterThan: 10)
+          .orderBy('Count_requests')
+          .get()
+          :
+      Swich? FirebaseFirestore.instance
           .collection('Prudacts')
           .where('IdMainCollection', isEqualTo:Prudact['IdPrudactMainCollection'])
           .get()
@@ -46,11 +56,11 @@ class GridViewRust extends StatelessWidget {
                 SizedBox(
                   child:AnimationLimiter(
                     child: GridView.count(
-                      childAspectRatio: hight*3.5/wight*0.1,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.all(wight / 60),
+                      padding: EdgeInsets.all(w / 60),
                       crossAxisCount: 2,
+                      childAspectRatio: h*4/w*0.1,
                       mainAxisSpacing: 10,
                       children: List.generate(
                         snapshot.data!.docs.length, (int index) {
@@ -85,18 +95,15 @@ class GridViewRust extends StatelessWidget {
                                         children: [
                                           snapshot.data!.docs[index]['Discount']<1?
                                           snapshot.data!.docs[index]['Discount']>0?
-                                          const Row(children: [
-                                            Icon(CupertinoIcons.gift,size: 15,color: Colors.teal),
-                                            Text('خصم',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Colors.teal),),
-                                          ],):const Text(''):const Text(''),
+                                          const Text(''):const Text(''):const Text(''),
                                           Center(
                                             child: CachedNetworkImage(
                                               imageUrl: snapshot.data!.docs[index]['ImageUrl'],
                                               placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
                                               errorWidget: (context, url, error) => const Icon(Icons.error),
                                               imageBuilder: (context, imageProvider) => Container(
-                                                height: 125,
-                                                width: 140,
+                                                height: w/5,
+                                                width: w/5,
                                                 decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(12),
                                                   image: DecorationImage(
@@ -107,33 +114,6 @@ class GridViewRust extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          Positioned(
-                                              bottom: 2,
-                                              left: 25,
-                                              child:Container(decoration:
-                                              BoxDecoration(color:Colors.black54,borderRadius: BorderRadius.circular(5)),
-                                                  child:snapshot.data!.docs[index]['TybePrudact']<1?
-                                                  AddToCartWidget(Prudact:snapshot.data.docs[index].data(),ColorIcon: Colors.teal,SizeIcon: 30,):
-                                                  InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddToCartResturant1(Prudact1: snapshot.data.docs[index].data())));
-                                                    },
-                                                    child: Container(
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.white70,
-                                                            borderRadius: BorderRadius.circular(5)),
-                                                        height: 35,
-                                                        width:  35,
-                                                        child:Center(
-                                                          child: Icon(
-                                                            Icons.add,
-                                                            color:Colors.teal,
-                                                            size:30,
-                                                          ),
-                                                        )),
-                                                  ),
-                                              )
-                                          )
                                         ],
                                       ),
                                       Text(snapshot.data!.docs[index]['Name'],style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
@@ -145,11 +125,11 @@ class GridViewRust extends StatelessWidget {
                                           RichText(
                                             text: TextSpan(
                                               text:' ₪''${snapshot.data!.docs[index]['Prise']-snapshot.data!.docs[index]['Discount']} / ',
-                                              style: const TextStyle(fontSize: 30,color: Colors.red,fontWeight: FontWeight.bold,), // يمكنك استخدام أسلوب النص الافتراضي
+                                              style: TextStyle(fontSize:  w/18,color: Colors.red,fontWeight: FontWeight.bold,), // يمكنك استخدام أسلوب النص الافتراضي
                                               children: <TextSpan>[
                                                 TextSpan(
                                                   text: '${snapshot.data!.docs[index]['Prise']} ₪',
-                                                  style: const TextStyle(decoration: TextDecoration.lineThrough,fontSize: 25,color: Colors.grey),
+                                                  style: TextStyle(decoration: TextDecoration.lineThrough,fontSize:  w/18,color: Colors.grey),
                                                 ),
                                               ],
                                             ),
@@ -159,9 +139,33 @@ class GridViewRust extends StatelessWidget {
                                       )
                                           :
                                       Text('${snapshot.data!.docs[index]['Prise']} ₪',style: const TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 18),),
+                                      Container(decoration:
+                                      BoxDecoration(color:Colors.black54,borderRadius: BorderRadius.circular(5)),
+                                        child:snapshot.data!.docs[index]['TybePrudact']<1?
+                                        AddToCartWidget(Prudact:snapshot.data.docs[index].data(),ColorIcon: Colors.teal,SizeIcon: 30,):
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => AddToCartResturant1(Prudact1: snapshot.data.docs[index].data())));
+                                          },
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white70,
+                                                  borderRadius: BorderRadius.circular(5)),
+                                              height: 35,
+                                              width:  35,
+                                              child:Center(
+                                                child: Icon(
+                                                  Icons.add,
+                                                  color:Colors.teal,
+                                                  size:30,
+                                                ),
+                                              )),
+                                        ),
+                                      ),
+                                      SizedBox(height: w/30),
                                       snapshot.data!.docs[index]['Discount']>0?
                                       Container(
-                                          width: wight/5.8,
+                                          width: w/5.8,
                                           child: DiscountWidget(Prise:  snapshot.data!.docs[index]['Prise'], Discount:snapshot.data!.docs[index]['Discount'] , Size1: 10))
                                           :
                                       const Text(''),

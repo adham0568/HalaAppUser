@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:halaapp/models/Rating.dart';
+import 'package:halaapp/models/Rating/Rating.dart';
 import 'package:halaapp/models/Support/FireBaseStatment.dart';
 
 class SupportPage extends StatefulWidget {
@@ -53,13 +53,12 @@ class _SupportPageState extends State<SupportPage> {
                                           Navigator.pop(context);
                                           showDialog(context: context, builder: (context) => AlertDialog(
                                             content: Container(
-                                              padding: EdgeInsets.only(top: 20,left: 20,right: 20,bottom: 20),
-                                              height: h/4,
+                                              height: h/3,
                                               child: Column(
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
-                                                  Text('الرجاء تقييم المحادثة',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 30),),
-                                                  Raiting(),
+                                                  Text('الرجاء تقييم المحادثة',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: w/20),),
+                                                  Raiting(SizeStar: 35),
                                                   InkWell(
                                                     onTap: () {
                                                       DataBase.EndChat(

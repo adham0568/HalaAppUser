@@ -1,31 +1,39 @@
 //Test GitUpdate
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:halaapp/Pages/Shortcuts/PreviousOrders.dart';
 import 'package:halaapp/Pages/appPages/Sections/MPB/MPB.dart';
 import 'package:halaapp/Pages/appPages/Sections/Restaurant/Restaurant%20List.dart';
-import 'package:halaapp/Pages/appPages/Sections/Hala/soprmarket.dart';
 import 'package:halaapp/Pages/AccountPages/AccountPage.dart';
+import 'package:halaapp/Pages/appPages/Sections/SearchPage.dart';
+import 'package:halaapp/models/Color.dart';
 import 'package:halaapp/models/HIGHT.dart';
 import 'package:halaapp/provider/DataUser.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../models/Adds/ModelApp.dart';
-import '../models/Adds/add 2.dart';
+import '../models/Adds/ModelApp.dart';
+import '../models/CartProvider.dart';
 import '../models/snack.dart';
 import '../provider/CartProvider.dart';
 import '../provider/TotalPrudact.dart';
 import 'appPages/Cart/CartPage.dart';
+import 'appPages/Sections/Hala/SuperMarket.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
+ColorModel CM=ColorModel();
 String addName1='0';
 String addName='0';
 class _HomePageState extends State<HomePage> {
+
+  bool? whichPage;
+  String? Name;
   Map<String, dynamic> ? dataUser;
   static Map<String, dynamic> Data = {};
 
@@ -51,310 +59,398 @@ bool DataGett1=false;
     final DataUser = Provider.of<Userdata>(context).getUser;
     final Provaider = Provider.of<CartProvider>(context);
     return
-    DataUser==null?Container(color: Colors.white,
-    child: const Center(
-      child: CircularProgressIndicator(color: Colors.teal,backgroundColor: Colors.red,),
-    ),
-    ):
-      Scaffold(
-          appBar: AppBar(
-            leading: IconButton(onPressed: () async {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const AccountPage(),));
-            },icon: const Icon(Icons.account_circle,color: Colors.white,)),
-            title: Image.asset('assets/Img/logowelcome.png'),
-            flexibleSpace: Container(
-              decoration: const BoxDecoration(gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    Color.fromRGBO(56, 95, 172, 1),
-                    Color.fromRGBO(1, 183, 168, 1)
-                  ]
-              )),
+      DataUser==null?Container(color: CM.W1,
+        child: const Center(
+          child: CircularProgressIndicator(color: Colors.teal,backgroundColor: Colors.red,),
+        ),
+      ): Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              flexibleSpace: FlexibleSpaceBar(
+                  background: Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              Colors.teal.withOpacity(0.7),
+                              Colors.teal.withOpacity(0.9)
+                            ]
+                        )
+                    ),
+                    child:FutureBuilder<DocumentSnapshot>(
+                    future:FirebaseFirestore.instance.collection('Pohto add').doc('WelcomePage').get(),
+                    builder:
+                        (BuildContext context,
+                                AsyncSnapshot<DocumentSnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                return Text("Something went wrong");
+                              }
+
+                              if (snapshot.hasData && !snapshot.data!.exists) {
+                                return Text("Document does not exist");
+                              }
+
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                                data['TybePrudact']==0?whichPage=true:whichPage=false;
+                                data['TybePrudact']==0?Name='منتج':Name='مطعم';
+                                return  Stack(
+                                  children: [
+                                    SafeArea(child: Image.asset('assets/Img/logowelcome.png',fit: BoxFit.cover,color: Colors.white.withOpacity(0.1),height: 700,width: 700,)),
+                                    Container(
+                                      margin: EdgeInsets.only(top: w/6,right: w/8),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 20,),
+                                          Align(
+                                              alignment: Alignment.topRight,
+                                              child: Text(data['TextAdd'],style: TextStyle(color: CM.W1,fontWeight: FontWeight.bold,fontSize: h/35),)),
+                                          Transform.translate(
+                                            offset: Offset(w/2.8,w/7),
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(whichPage: whichPage!, Name:Name!, NamePrudact: data['PrudactName']),));
+                                              },
+                                              child: Container(
+                                                height: w/11,
+                                                width: w/3,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(8),
+                                                  border: Border.all(color: Colors.black,width: 0.5),
+                                                  color:CM.W1,
+                                                ),
+                                                child: Center(child: Text('أطلب الان',style: TextStyle(fontSize: 15,color: Colors.teal,fontWeight: FontWeight.bold),)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 20,
+                                      child: Stack(
+                                        children: [
+                                          Image.asset('assets/Img/hooosadasda.png',height: h/5.5,),
+                                          Positioned(
+                                              left: w/13.3,
+                                              child:Container(
+                                                height:h/6,
+                                                child: CachedNetworkImage(
+                                                  imageUrl: data['ImageUrl'],
+                                                  placeholder: (context, url) => Container(
+                                                      decoration: BoxDecoration(shape: BoxShape.circle),
+                                                      height: h/8,width:h/8,child: const CircularProgressIndicator(color: Colors.red)),
+                                                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                );
+                              }
+                              return Text("loading");
+                              },
+                    )
+                  )
+              ),
+              leading:  Container(
+                margin: EdgeInsets.all(w/75),
+                decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.white),
+                child: Center(
+                  child: IconButton(onPressed: () async {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const AccountPage(),));
+                  },icon: const Icon(Icons.account_circle_outlined,color: Colors.black,size: 30,)),
+                ),
+              ),
+              expandedHeight: h/3,
+              pinned: true,
+              backgroundColor: Colors.white,
+              actions: [
+                CartWidget(h: w*0.1, w: w*0.1)
+              ],
             ),
-            actions: [
-              SizedBox(
-                height: 50,
-                width: 50,
-                child: Stack(
+            SliverList(delegate: SliverChildBuilderDelegate((context, index) {
+              return
+                Column(
                   children: [
-                    Positioned(
-                        top: 7,
-                        left: 25,
-                        child: Container(
-                          height: 20,
-                          width: 20,
-                          decoration: const BoxDecoration(color: Color.fromRGBO(20, 20, 20, 200), shape: BoxShape.circle),
-                          child: Center(child: Consumer<total>(
-                            builder: (context, value, child) {
-                              return Text(value.Num1().toString(),style: const TextStyle(fontSize: 15,color: Colors.black45),);
-                            },
-                          )),
-                        )),
-                    Positioned(
-                        top: 10,
-                        right: 10,
-                        left: 10,
-                        bottom: 10,
-                        child: IconButton(onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const CartPage()));
-                        }, icon: const Icon(CupertinoIcons.cart,color: Colors.white,))),
-
-                  ],
-                ),
-              )
-            ],
-          ),
-
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Center(
-                  child: Container(
-                      child:ImageAnimation2(DocumantName:'HomePage')
-                  ),
-                ),
-                const SizedBox(height: 47,),
-                Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 10,right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: w/3.5,
-                              height: h/5.5,
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-                              child: Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => MPB(Tybe: 11),));
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(color: const Color.fromRGBO(230, 230, 230, 1),borderRadius: BorderRadius.circular(12)),
-                                      child: Image.asset('assets/parts/pngegg.png',height: 100,width: 121,),
-                                    ),
-                                  ),
-                                  const Text('لحوم',style: TextStyle(color: Colors.black,fontSize: 20),),
-                                ],
-                              ),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const SoparMarker()));
-                              },
-                              child: Container(
-                                width: w/3.5,
-                                height: h/5.5,
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(color: const Color.fromRGBO(230, 230, 230, 1),borderRadius: BorderRadius.circular(12)),
-                                      child: Image.asset('assets/parts/مارت.png',height: 100,width: 130,),
-                                    ),
-                                    const Text('سوبر ماركت',style: TextStyle(color: Colors.black,fontSize: 20),),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => RestaurantList(Which: false),));
-                              },
-                              child: Container(
-                                width: w/3.5,
-                                height: h/5.5,
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(color: const Color.fromRGBO(230, 230, 230, 1),borderRadius: BorderRadius.circular(12)),
-                                      child: Image.asset('assets/parts/طعام.png',height: 100,width: 121,),
-                                    ),
-                                    const Text('مطاعم',style: TextStyle(color: Colors.black,fontSize: 20),),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10,),
-                      Container(
-                        margin: const EdgeInsets.only(right: 9,left: 9),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 170,
-                                height: 150,
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-                                child: Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => MPB(Tybe: 10),));
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(color: const Color.fromRGBO(230, 230, 230, 1),borderRadius: BorderRadius.circular(12)),
-                                        child: Image.asset('assets/parts/مخبوزات.png',height: 100,width: 170,),
-                                      ),
-                                    ),
-                                    const Text('مخبوزات',style: TextStyle(color: Colors.black,fontSize: 20),),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              Container(
-                                width: 170,
-                                height: 150,
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-                                child: Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => MPB(Tybe: 12),));
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(color: const Color.fromRGBO(230, 230, 230, 1),borderRadius: BorderRadius.circular(12)),
-                                        child: Image.asset('assets/parts/صيدلية.png',height: 100,width: 170,),
-                                      ),
-                                    ),
-                                    const Text('صيدلية',style: TextStyle(color: Colors.black,fontSize: 20),),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  ),/*القسم الثاني*/
-                const SizedBox(height: 70,),
-                Center(
-                  child: Container(
-                      child:ImageAnimation(DocumantName:'HomePageAdd2')
-                  ),
-                ),
-                const SizedBox(height: 47,),
-                Container(
-                  margin: const EdgeInsets.only(left: 8,right:8 ),
-                  child: Column(
-                    children: [
-                      Transform.translate(offset: const Offset(150,0),
-                          child: const Text('اختصارات',style: TextStyle(fontWeight: FontWeight.bold,
-                          fontSize: 25),)),
-                      const SizedBox(height: 10,),
-                      Row(
+                    Container(
+                      margin: EdgeInsets.only(top: h/12),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InkWell(
-                            borderRadius: BorderRadius.circular(12),
-                            onTap: () {
-                              showSnackBar(context: context, text: 'سيتم توفير هذا الخيار قريباً', color1: Colors.teal);
-                            },
-                            child: Column(
+                          Container(
+                            margin: const EdgeInsets.only(left: 10,right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  height: h/8,
-                                  width: w/5,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),
-                                  gradient: const LinearGradient(begin:Alignment.topLeft ,end: Alignment.bottomRight,
-                                  colors: [
-                                    Color.fromRGBO(56, 95, 172, 1),
-                                    Color.fromRGBO(1, 183, 168, 1)
-                                  ])),
-                                  child: Icon(Icons.handshake,size: h/16,color: Colors.white,),
+                                  width: w/3.5,
+                                  height: h/5.5,
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                                  child: Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => MPB(Tybe: 11),));
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(color:CM.BackGround,borderRadius: BorderRadius.circular(12)),
+                                          child: Image.asset('assets/Sections/4.png',),
+                                        ),
+                                      ),
+                                      const Text('لحوم',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                    ],
+                                  ),
                                 ),
-                                const Text('أعمال الخير'),
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const SuperMarket()));
+                                  },
+                                  child: Container(
+                                    width: w/3.5,
+                                    height: h/5.5,
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(color: const Color.fromRGBO(230, 230, 230, 1),borderRadius: BorderRadius.circular(12)),
+                                          child: Image.asset('assets/Sections/1.png',),
+                                        ),
+                                        const Text('سوبر ماركت',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => RestaurantList(Which: false),));
+                                  },
+                                  child: Container(
+                                    width: w/3.5,
+                                    height: h/5.5,
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(color: const Color.fromRGBO(230, 230, 230, 1),borderRadius: BorderRadius.circular(12)),
+                                          child: Image.asset('assets/Sections/3.png',),
+                                        ),
+                                        const Text('مطاعم',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                          InkWell(
-                            borderRadius: BorderRadius.circular(12),
-                            onTap: () {
-                              showSnackBar(context: context, text: 'سيتم توفير هذا الخيار قريباً', color1: Colors.teal);
-                            },
-                            child: Column(
+                          const SizedBox(height: 10,),
+                          Container(
+                            margin: const EdgeInsets.only(left: 10,right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  height: h/8,
-                                  width: w/5,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),
-                                      gradient: const LinearGradient(begin:Alignment.topLeft ,end: Alignment.bottomRight,
-                                          colors: [
-                                            Color.fromRGBO(56, 95, 172, 1),
-                                            Color.fromRGBO(1, 183, 168, 1)
-                                          ])),
-                                  child: Icon(Icons.food_bank_outlined,size: h/16,color: Colors.white,),
+                                  width: w/3.5,
+                                  height: h/5.5,
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                                  child: Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => MPB(Tybe: 10),));
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(color: const Color.fromRGBO(230, 230, 230, 1),borderRadius: BorderRadius.circular(12)),
+                                          child: Image.asset('assets/Sections/5.png',),
+                                        ),
+                                      ),
+                                      const Text('مخبوزات',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                    ],
+                                  ),
                                 ),
-                                const Text('اكيلة الشورما'),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            borderRadius: BorderRadius.circular(12),
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => RestaurantList(Which: true),));
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: h/8,
-                                  width: w/5,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),
-                                      gradient: const LinearGradient(begin:Alignment.topLeft ,end: Alignment.bottomRight,
-                                          colors: [
-                                            Color.fromRGBO(56, 95, 172, 1),
-                                            Color.fromRGBO(1, 183, 168, 1)
-                                          ])),
-                                  child: Icon(Icons.discount,size: h/16,color: Colors.white,),
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => MPB(Tybe: 12),));
+                                  },
+                                  child: Container(
+                                    width: w/3.5,
+                                    height: h/5.5,
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(color: const Color.fromRGBO(230, 230, 230, 1),borderRadius: BorderRadius.circular(12)),
+                                          child: Image.asset('assets/Sections/2.png',),
+                                        ),
+                                        const Text('صيدلية',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                const Text('العروض'),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            borderRadius: BorderRadius.circular(12),
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const PreviousOrdar(),));
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: h/8,
-                                  width: w/5,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),
-                                      gradient: const LinearGradient(begin:Alignment.topLeft ,end: Alignment.bottomRight,
-                                          colors: [
-                                            Color.fromRGBO(56, 95, 172, 1),
-                                            Color.fromRGBO(1, 183, 168, 1)
-                                          ])),
-                                  child: Icon(Icons.article_sharp,size: h/16,color: Colors.white,),
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => RestaurantList(Which: false),));
+                                  },
+                                  child: Container(
+                                    width: w/3.5,
+                                    height: h/5.5,
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(color: const Color.fromRGBO(230, 230, 230, 1),borderRadius: BorderRadius.circular(12)),//انشاء قسم القهوة
+                                          child: Image.asset('assets/Sections/6.png',),
+                                        ),
+                                        const Text('قهوة',style: TextStyle(color: Colors.black,fontSize: 20),),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                const Text('طلباتك السابقة'),
                               ],
                             ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),//اختصارات
-                const SizedBox(
-                  height: 100,
-                ),/*القسم الرابع*/
-              ],
-            ),
-          )
-    );
+                    ),/*القسم الثاني*/
+                    const SizedBox(height: 70,),
+                    Container(
+                      margin: const EdgeInsets.only(left: 8,right:8 ),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Text('اختصارات',style: TextStyle(fontWeight: FontWeight.bold,
+                                fontSize: 25),),
+                          ),
+                          const SizedBox(height: 10,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                borderRadius: BorderRadius.circular(12),
+                                onTap: () {
+                                  showSnackBar(context: context, text: 'سيتم توفير هذا الخيار قريباً', color1: CM.T1);
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: h/8,
+                                      width: w/5,
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),
+                                          color: Colors.black54
+                                      ),
+                                      child: Icon(Icons.handshake,size: h/16,color: CM.W1,),
+                                    ),
+                                    const Text('أعمال الخير'),
+                                  ],
+                                ),
+                              ),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(12),
+                                onTap: () {
+                                  showSnackBar(context: context, text: 'سيتم توفير هذا الخيار قريباً', color1: CM.T1);
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: h/8,
+                                      width: w/5,
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),
+                                          color: Colors.black54
+                                      ),
+                                      child: Icon(Icons.food_bank_outlined,size: h/16,color: CM.W1,),
+                                    ),
+                                    const Text('اكيلة الشورما'),
+                                  ],
+                                ),
+                              ),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(12),
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => RestaurantList(Which: true),));
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: h/8,
+                                      width: w/5,
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),
+                                          color: Colors.black54
+                                      ),
+                                      child: Icon(Icons.discount,size: h/16,color: CM.W1,),
+                                    ),
+                                    const Text('العروض'),
+                                  ],
+                                ),
+                              ),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(12),
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const PreviousOrdar(),));
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: h/8,
+                                      width: w/5,
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),
+                                        color: Colors.black54
+                                      ),
+                                      child: Icon(Icons.article_sharp,size: h/16,color: CM.W1,),
+                                    ),
+                                    const Text('طلباتك السابقة'),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),//اختصارات
+                    const SizedBox(height: 47,),
+                    Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Text('عروض',style: TextStyle(fontWeight: FontWeight.bold,
+                              fontSize: 25),),
+                        ),
+                        Center(
+                          child: Container(
+                              child:ImageAnimation(DocumantName:'HomePageAdd2')
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 47,
+                    ),/*القسم الرابع*/
+                    Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Text('جديد',style: TextStyle(fontWeight: FontWeight.bold,
+                              fontSize: 25),),
+                        ),
+                        Center(
+                          child: Container(
+                              child:ImageAnimation(DocumantName:'HomePage')
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 47,),
+                  ],
+                );
+            },childCount:1 )),
+          ],
+        ),
+      );
   }
 }

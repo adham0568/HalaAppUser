@@ -1,13 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:halaapp/Pages/AccountPages/FireBaseStatment.dart';
 import 'package:halaapp/Pages/Shortcuts/PreviousOrdarDetales.dart';
+import 'package:halaapp/Pages/appPages/Cart/CartPage.dart';
+import 'package:halaapp/Pages/appPages/Sections/ChackeOut/ChackeOutPage.dart';
 import 'package:halaapp/Pages/appPages/Sections/ChackeOut/DoneOrdar.dart';
+import 'package:halaapp/models/Rating/Rating.dart';
+import 'package:halaapp/models/Support/FireBaseStatment.dart';
+import 'package:halaapp/models/snack.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
+import '../../models/Item.dart';
+import '../../models/Rating/FireBaseStatment.dart';
+import '../../provider/CartProvider.dart';
 import '../../provider/DataUser.dart';
+import '../../provider/TotalPrudact.dart';
 
 
 class PreviousOrdar extends StatefulWidget {
@@ -16,26 +27,55 @@ class PreviousOrdar extends StatefulWidget {
   @override
   State<PreviousOrdar> createState() => _PreviousOrdarState();
 }
-String OrdarStat='';
 class _PreviousOrdarState extends State<PreviousOrdar> {
+  final Comment=TextEditingController();
+  String OrdarStat='';
+  DataBaseRate DbEdit=DataBaseRate();
+  Item? myItems;
+  List<Item> ItemsList=[];
   @override
   Widget build(BuildContext context) {
     final DataUser = Provider.of<Userdata>(context).getUser;
+    final _Provaider = Provider.of<CartProvider>(context);
+    final _Provaider1 = Provider.of<total>(context);
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
+    reOrdar({required List ItemList,required int index,required String idMarket}){
+      _Provaider.xid1=idMarket;
+      for(int i=0;i<ItemList.length;i++)
+      {
+        setState(() {
+          myItems= Item(
+            Count_Quantity:ItemList[i]['Count_Quantity'] ,
+            Count_requests: ItemList[i]['Count_requests'],
+            IdMainCollection:ItemList[i]['IdMainCollection'],
+            IdPrudact: ItemList[i]['IdPrudact'],
+            OpitionSelected: ItemList[i]['OpitionSelected'],
+            Name: ItemList[i]['Name'],
+            TybePrudact: ItemList[i]['TybePrudact'],
+            Opitions: ItemList[i]['Opitions'],
+            Prise: ItemList[i]['Prise'],
+            Discount: ItemList[i]['Discount'],
+            IdMarket: ItemList[i]['IdMarket'],
+            ImageUrl: ItemList[i]['ImageUrl'],
+            PrudactsDetals: ItemList[i]['PrudactsDetals'],
+          );
+        });
+        print(_Provaider.IdPrudacts);
+        setState(() {
+          _Provaider.AddToCart(item:myItems!);
+          _Provaider1.addNum();
+        });
+      }
+    }
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
           'assets/Img/logowelcome.png',
-          height: 100,
-          color: Colors.white,
+          height: h,
+          width: h,
+          color: Colors.white70,
         ),
-        actions: const [
-          SizedBox(
-            height: 50,
-            width: 50,
-          )
-        ],
         centerTitle: true,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -51,7 +91,10 @@ class _PreviousOrdarState extends State<PreviousOrdar> {
       body: Column(
         children: [
           FutureBuilder(
-            future: FirebaseFirestore.instance.collection('Ordar').where('User',isEqualTo: FirebaseAuth.instance.currentUser!.uid).get(),
+            future: FirebaseFirestore.instance.collection('Ordar').where('User', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                .orderBy('DateTime', descending: true)
+                .limit(10)
+                .get(),
             builder:
                 (BuildContext context, AsyncSnapshot snapshot) {
 
@@ -61,7 +104,7 @@ class _PreviousOrdarState extends State<PreviousOrdar> {
               if (snapshot.connectionState == ConnectionState.done) {
                 List<QueryDocumentSnapshot> data = snapshot.data!.docs;
                 return SizedBox(
-                  height: 700,
+                  height: h*0.8,
                   child: ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -111,17 +154,12 @@ class _PreviousOrdarState extends State<PreviousOrdar> {
                                           Color.fromRGBO(56, 95, 172, 1),
                                           Color.fromRGBO(1, 183, 168, 1)
                                         ]),),
-                                  height: h/4,
+                                  height: h/5,
                                   margin: const EdgeInsets.only(left:11 ,right:11 ,top: 10,bottom: 5 ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
-                                        width: w/4,
-                                        margin: const EdgeInsets.only(left: 15,right: 15,top: 7,bottom: 7),
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Colors.white),
-                                        child:Image.network(snapshot.data!.docs[index1]['ImageProfile']),
-                                      ),
+                                      Expanded(child: Image.network(snapshot.data!.docs[index1]['ImageProfile'])),
                                       Container(
                                         margin: const EdgeInsets.only(left: 10,right: 15,top: 10,bottom: 10),
                                         child: Column(
@@ -129,17 +167,89 @@ class _PreviousOrdarState extends State<PreviousOrdar> {
                                           children: [
                                             Text(OrdarStat,style: TextStyle(fontSize: w/25,fontWeight: FontWeight.bold,color: Colors.white),),
                                             Text(snapshot.data!.docs[index1]['Name'],style: TextStyle(fontSize: w/25,color: Colors.white,fontWeight: FontWeight.bold),),
-                                            Text(DateFormat.jm().format(DateTime.now()).toString(),style: TextStyle(fontSize: w/25,color: Colors.white,fontWeight: FontWeight.bold),),
+                                            Text(DateFormat.jm().format(data[index]['DateTime'].toDate()).toString(),style: TextStyle(fontSize: w/25,color: Colors.white,fontWeight: FontWeight.bold),),
                                             Row(
                                               children: [
-                                                data[index1]['OrdarStates']>=4?
-                                                ElevatedButton(onPressed: (){},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)), child:
-                                                const Text('😊  تقييم الطلب'),):
+                                                data[index]['OrdarStates']>=4?
+                                                InkWell(
+                                                  onTap: () {
+                                                    data[index]['OrdarRate']==0? showModalBottomSheet(
+                                                      isScrollControlled: true,
+                                                      backgroundColor: Color.fromRGBO(100, 0, 0, 500),
+                                                      context: context,
+                                                      builder: (BuildContext context) {
+                                                        return Container(
+                                                          color: Colors.white,
+                                                          padding: EdgeInsets.only(left: w/20,right: w/20),
+                                                          height: h/2.5,
+                                                          child: Column(
+                                                            children: [
+                                                              Text('الرجاء تقييم الطلب',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: w/20),),
+                                                              Raiting(SizeStar: 40),
+                                                              TextFormField(
+                                                                controller: Comment,
+                                                                decoration: InputDecoration(border: OutlineInputBorder()),
+                                                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.black54),
+                                                                maxLength: 100,
+                                                              ),
+                                                              SizedBox(height: w/10,),
+                                                              InkWell(
+                                                                onTap: () async {
+                                                                  DbEdit.Rateing(
+                                                                      RateStars: Rate,
+                                                                      Comment: Comment.text,
+                                                                      Name: DataUser!.Name,
+                                                                      Date: DateTime.now(),
+                                                                      IdMarket:  data[index]['UidMarket'],
+                                                                      idRating:Uuid().v1(),
+                                                                      IdOrdar: data[index]['orderID'],
+                                                                  );
+                                                                  Navigator.pop(context);
+                                                                  showSnackBar(context: context, text: 'تم ارسال التقييم', color1: Colors.teal);
+                                                                  setState(() {});
+                                                                },
+                                                                child: Container(
+                                                                  decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                    gradient: LinearGradient(
+                                                                      begin: Alignment.topRight,
+                                                                      end: Alignment.bottomLeft,
+                                                                      colors: [
+                                                                        Colors.teal,
+                                                                        Colors.tealAccent
+                                                                      ]
+                                                                    )
+                                                                  ),
+                                                                  width: w/2,
+                                                                  height: w/9,
+                                                                  child: Center(child:
+                                                                    Text('إرسال',style: TextStyle(
+                                                                      fontSize: 20,fontWeight: FontWeight.bold,
+                                                                      color: Colors.white
+                                                                    ),),),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ); },):showSnackBar(context: context, text: 'لا يمكن تقييم هذا الطلب مرة اخرى', color1: Colors.teal);
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(3),
+                                                    decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8)),
+                                                    width: w/5,
+                                                    height: w/13,
+                                                    child: Center(
+                                                      child: Text('تقييم الطلب',style: TextStyle(
+                                                          fontWeight: FontWeight.bold,fontSize: 13,color: Colors.black
+                                                      ),),
+                                                    ),
+                                                  ),
+                                                ):
                                                 ElevatedButton(onPressed: (){
                                                   print(data[index]['OrdarStates']);
                                                   Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                       OrdarShop(
-                                                          TotalPrise:int.parse(data[index]['totalPrice'].replaceAll('₪', '')) ,
+                                                          TotalPrise:double.parse(data[index]['totalPrice'].replaceAll('₪', '')) ,
                                                           ordarId:data[index]['orderID'],),));
                                                 },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)), child:
                                                 Row(
@@ -150,27 +260,84 @@ class _PreviousOrdarState extends State<PreviousOrdar> {
                                                 ),),
 
                                                 const SizedBox(width: 15,),
-                                                ElevatedButton(onPressed: (){
-                                                  showDialog(context: context, builder: (context) => AlertDialog(
-                                                    content: Container(
-                                                      height: 150,
-                                                      color: Colors.white,
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                        children: [
-                                                          const Text('هل انت متأكد من اعادة الطلب؟'),
-                                                          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                            children: [
-                                                              ElevatedButton(onPressed: (){},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)), child: const Text('نعم'),),
-                                                              ElevatedButton(onPressed: (){},style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)), child: const Text('لا'),),
-
-                                                            ],
-                                                          )
-                                                        ],
+                                                data[index]['OrdarStates']>=4?
+                                                InkWell(
+                                                  onTap: () {
+                                                    showDialog(context: context, builder: (context) => AlertDialog(
+                                                      content: Container(
+                                                        height: 150,
+                                                        color: Colors.white,
+                                                        child: Column(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            const Text('هل انت متأكد من اعادة الطلب؟'),
+                                                            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                              children: [
+                                                                InkWell(
+                                                                  onTap: () async {
+                                                                    Navigator.pop(context);
+                                                                   await reOrdar(index: index,ItemList: data[index]['items'],idMarket:data[index]['UidMarket']);
+                                                                    Navigator.push(context, MaterialPageRoute(builder: (context) => CartPage(),));
+                                                                    },
+                                                                  child: Container(
+                                                                    height: w/10,
+                                                                    width: w/4,
+                                                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+                                                                    gradient: LinearGradient(
+                                                                      begin: AlignmentDirectional(5,2),
+                                                                      end: Alignment.bottomLeft,
+                                                                      colors: [
+                                                                        Colors.tealAccent,
+                                                                        Colors.teal,
+                                                                      ]
+                                                                    )
+                                                                    ),
+                                                                    child: Center(
+                                                                      child: Text('نعم',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white),),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                  child: Container(
+                                                                    height: w/10,
+                                                                    width: w/4,
+                                                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+                                                                        gradient: LinearGradient(
+                                                                            begin: AlignmentDirectional(5,2),
+                                                                            end: Alignment.bottomLeft,
+                                                                            colors: [
+                                                                              Colors.tealAccent,
+                                                                              Colors.teal,
+                                                                            ]
+                                                                        )
+                                                                    ),
+                                                                    child: Center(
+                                                                      child: Text('لا',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white),),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            )
+                                                          ],
+                                                        ),
                                                       ),
+                                                    ),);
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(3),
+                                                    decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(8)),
+                                                    width: w/5,
+                                                    height: w/13,
+                                                    child: Center(
+                                                      child: Text('إعادة الطلب ',style: TextStyle(
+                                                        fontWeight: FontWeight.bold,fontSize: 13,color: Colors.black
+                                                      ),),
                                                     ),
-                                                  ),);
-                                                },style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.orange)), child: const Text('إعادة الطلب'),),
+                                                  ),
+                                                ):Text('')
                                               ],
                                             ),
                                           ],
@@ -195,4 +362,64 @@ class _PreviousOrdarState extends State<PreviousOrdar> {
     );
   }
 }
-/* */
+/*if(_Provaider.Products.isNotEmpty){
+            if(_Provaider.Products.first.IdMarket==myItems!.IdMarket){
+              _Provaider.addPrudact(item: myItems!);
+              print(_Provaider.IdPrudacts);
+              _Provaider1.addNum();
+              setState(() {
+                _Provaider.AddToCart(item: myItems!);
+              });
+              _Provaider.GetNumberByProducts(myItems!) + 1;
+            }
+            else if(_Provaider.Products.first.IdMarket!=myItems!.IdMarket){
+              showDialog(context: context, builder: (context) => AlertDialog(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                content: Container(
+                  height: 160,
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Text('بدء سلة جديدة؟',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.black),),
+                      const Text('عند بدء طلب من متجر جديد سيتم ازالة المنتجات من المتاجر الاخرى',style: TextStyle(fontWeight:FontWeight.bold,fontSize: 15,color: Colors.black54),),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(onPressed: (){
+                            _Provaider.Products.clear();
+                            _Provaider.listitem().clear();
+                            _Provaider.xid1=myItems!.IdMarket;
+                            _Provaider.addPrudact(item: myItems!);
+                            print(_Provaider.xid1);
+                            _Provaider1.addNum();
+                            setState(() {
+                              _Provaider.AddToCart(item: myItems!);
+                            });
+                            _Provaider.GetNumberByProducts(myItems!) + 1;
+                            _Provaider1.Num=1;
+                            Navigator.pop(context);
+                          },
+                              style:ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.teal),overlayColor: MaterialStateProperty.all(Colors.red)), child: const Text('تأكيد البدء',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
+                          ElevatedButton(onPressed: (){Navigator.pop(context);},
+                              style:ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white),overlayColor: MaterialStateProperty.all(Colors.green)), child: const Text('الغاء',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.teal),)),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),);
+            }
+          }
+          else{
+            _Provaider.addPrudact(item: myItems!);
+            _Provaider.xid1=myItems!.IdMarket;
+            print(_Provaider.xid1);
+            _Provaider1.addNum();
+
+            setState(() {
+              _Provaider.AddToCart(item: myItems!);
+            });
+            _Provaider.GetNumberByProducts(myItems!) + 1;
+
+          } */

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:halaapp/models/Color.dart';
 
 class PreviousOrdarDetales extends StatefulWidget {
   final QueryDocumentSnapshot data;
@@ -16,6 +17,7 @@ class _PreviousOrdarDetalesState extends State<PreviousOrdarDetales> {
   @override
   Map? DataUser;
   bool DataGet=false;
+  ColorModel Cm=ColorModel();
     GetDataUser() async {
      await FirebaseFirestore.instance.collection('UserData')
           .doc(widget.data['User'])
@@ -49,8 +51,9 @@ class _PreviousOrdarDetalesState extends State<PreviousOrdarDetales> {
   }
   @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
     String TotalPrise=widget.data['totalPrice'];
-
     List<dynamic> displayedItems = [];
     for (var item in widget.data['items']) {
       var isItemDisplayed = displayedItems
@@ -65,15 +68,10 @@ class _PreviousOrdarDetalesState extends State<PreviousOrdarDetales> {
       appBar: AppBar(
         title: Image.asset(
           'assets/Img/logowelcome.png',
-          height: 100,
-          color: Colors.white,
+          height: h,
+          width: h,
+          color: Colors.white70,
         ),
-        actions: const [
-          SizedBox(
-            height: 50,
-            width: 50,
-          )
-        ],
         centerTitle: true,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -90,24 +88,21 @@ class _PreviousOrdarDetalesState extends State<PreviousOrdarDetales> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Center(child: Text('رقم الطلب : ${widget.data['orderID'].toString()}',style: const TextStyle(fontWeight: FontWeight.bold,
-            fontSize: 30),)),
             Container(
-              margin: const EdgeInsets.only(left: 40,right: 15),
+              margin: EdgeInsets.only(left: w/10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const SizedBox(width: 15,),
-                  const Text('هلا ماركت',style: TextStyle(fontWeight: FontWeight.bold,
-                      fontSize: 35),),
-                  const SizedBox(width: 30,),
+                  Text('هلا ماركت',style: TextStyle(fontWeight: FontWeight.bold,
+                      fontSize: w/15),),
+                  SizedBox(width: w/10,),
                   Container(
-                    width: 100,
-                    height: 100,
-                    margin: const EdgeInsets.all(15),
-                    padding: const EdgeInsets.all(0),
+                    width: w/3,
+                    height: w/3,
+                    margin: EdgeInsets.all(w/20),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color: Colors.white
-                    ,border: Border.all(color: Colors.black54,width: 3)),
+                    ,border: Border.all(color: Colors.black54,width: 2)),
                   child: Image.asset('assets/Img/logowelcome.png'),
                   ),
 
@@ -116,30 +111,28 @@ class _PreviousOrdarDetalesState extends State<PreviousOrdarDetales> {
             ),
             Container(
               width: double.infinity,
-              margin: const EdgeInsets.only(left: 15,right: 15),
-              padding: const EdgeInsets.only(left: 15,right: 15),
+              margin: EdgeInsets.only(left: w/20,right: w/20),
+              padding: EdgeInsets.only(left: w/20,right: w/20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('${DataUser!['Name']}  :  الاسم',style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
-                  Text('${DataUser!['EmailAddress']}  :  رقم الهاتف',style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
-                  Text('${DataUser!['EmailAddress']}  :  العنوان',style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                  Text('    الاسم: ${DataUser!['Name']}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/20),),
+                  Text('${DataUser!['PhoneNumber']}  :  رقم الهاتف',style:TextStyle(fontWeight: FontWeight.bold, fontSize: w/20),),
+                  Text(' العنوان:${DataUser!['Dis']}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/20),),
                 ],),
             ),
-
-
-
             Container(
-              margin: const EdgeInsets.all(10),
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),border: Border.all(color: Colors.black45,width: 3)),
+              margin: EdgeInsets.all(w/45),
+              padding: EdgeInsets.all(w/45),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),border: Border.all(color: Colors.black45,width: 2)),
               child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(':الاصناف',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
-                Text('${TotalPrise.substring(0, TotalPrise.length - 1)}   :  السعر الاجمالي',style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
+                Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(':الاصناف',style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/15),)),
                 SizedBox(
-                  height: widget.data['items'].length*70.0,
+                  height:displayedItems.length*h/4.2,
                   child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: widget.data['items'].length,
@@ -163,17 +156,17 @@ class _PreviousOrdarDetalesState extends State<PreviousOrdarDetales> {
                             .length;
 
                         return Container(
-                          height: 120,
+                          height: h/6,
                           margin: const EdgeInsets.all(5),
-                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          padding: EdgeInsets.only(left: w/30, right: w/30),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
                                   colors: [
-                                    Color.fromRGBO(56, 95, 172, 1),
-                                    Color.fromRGBO(1, 183, 168, 1)
+                                    Cm.Mix1,
+                                    Cm.Mix2
                                   ])
                           ),
                           child: Row(
@@ -182,22 +175,26 @@ class _PreviousOrdarDetalesState extends State<PreviousOrdarDetales> {
                               Container(
                                 margin: const EdgeInsets.all(10),
                                 padding: const EdgeInsets.all(3),
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),border: Border.all(color: Colors.white,width: 3)),
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),border: Border.all(color: Colors.white,width: 2)),
                                 child: CachedNetworkImage(
                                   imageUrl: currentItem['ImageUrl'],
                                   placeholder: (context, url) => const CircularProgressIndicator(color: Colors.green),
                                   errorWidget: (context, url, error) => const Icon(Icons.error),
+                                  height: w/8,
                                 ),
                               ),
-                              Text(currentItem['Name'], style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+                              Text(currentItem['Name'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/25, color: Colors.white)),
                               Container(
-                                padding: const EdgeInsets.all(5),
-                                margin: const EdgeInsets.only(top: 30,right: 15,bottom: 15,left: 15),
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),border: Border.all(width: 3,color: Colors.white)),
+                                height: w/6,
+                                padding: EdgeInsets.all(3),
+                                margin: EdgeInsets.only(top: w/10,right: w/20,bottom:  w/20,left:  w/20),
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),border: Border.all(width: 2,color: Colors.white)),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Text('الكمية: $duplicateItemsCount', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
-                                    Text('${currentItem['Prise'] * duplicateItemsCount} ₪', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white)),
+                                    Text('الكمية: $duplicateItemsCount', style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/25, color: Colors.white)),
+                                    Text('${currentItem['Prise'] * duplicateItemsCount} ₪', style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/25, color: Colors.white)),
                                   ],
                                 ),
                               ),
@@ -209,6 +206,7 @@ class _PreviousOrdarDetalesState extends State<PreviousOrdarDetales> {
                     },
                   ),
                 ),
+                Text('${TotalPrise.substring(0, TotalPrise.length - 1)}   :  السعر الاجمالي',style:TextStyle(fontWeight: FontWeight.bold, fontSize: w/15),),
               ],),
             )
           ],

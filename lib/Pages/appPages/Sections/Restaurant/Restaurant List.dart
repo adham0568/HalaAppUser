@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:halaapp/Pages/RatingPages/RatingWidget.dart';
 import 'package:halaapp/Pages/appPages/Sections/Restaurant/ResturantCollection.dart';
 import 'package:halaapp/Pages/appPages/Sections/SearchPage.dart';
 import 'package:halaapp/models/snack.dart';
@@ -50,9 +51,7 @@ List<String> Tybe = [
   'ملحمة',
   'صيدلية',
 ];
-
 class _RestaurantListState extends State<RestaurantList> {
-
   @override
   Widget build(BuildContext context) {
     final DataUser = Provider.of<Userdata>(context).getUser;
@@ -91,6 +90,7 @@ class _RestaurantListState extends State<RestaurantList> {
                ), child: const Text('تراجع'),)
              ],
            ):Container(
+
               margin: const EdgeInsets.only(top: 20,left: 10,right: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -344,7 +344,7 @@ class _RestaurantListState extends State<RestaurantList> {
                     children: [
                       Container(
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color:SelectSection? Colors.green:Colors.black26,),
-                        width: w/2.8,height: 50,
+                        width: w/2.5,height: w/8.5,
                         margin: const EdgeInsets.only(top: 20),
                         child: Container(
                           margin: const EdgeInsets.only(left: 20,right: 20),
@@ -369,7 +369,7 @@ class _RestaurantListState extends State<RestaurantList> {
                         },
                         child: Container(
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color:Colors.black26,),
-                          width: w/3,height: 50,
+                          width: w/2.5,height: w/8.5,
                           margin: const EdgeInsets.only(top: 20),
                           child: Container(
                             margin: const EdgeInsets.only(left: 20,right: 20),
@@ -377,8 +377,8 @@ class _RestaurantListState extends State<RestaurantList> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('بحث',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),),
                                 Icon(Icons.search,color: Colors.white,size: 30,),
+                                Text('بحث',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),),
                               ],
                             ),
                           ),
@@ -413,8 +413,8 @@ class _RestaurantListState extends State<RestaurantList> {
                           },
                           child: Container(
                             margin: const EdgeInsets.only(top: 10, bottom: 10),
-                            height: hight / 3.1,
-                            width: wight * 95 / 100,
+                            height: hight / 3,
+                            width: wight * 0.95,
                             decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
@@ -431,7 +431,7 @@ class _RestaurantListState extends State<RestaurantList> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(
-                                  height: hight / 6,
+                                  height: w / 3.5,
                                   width: wight * 95,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
@@ -454,17 +454,17 @@ class _RestaurantListState extends State<RestaurantList> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text(
+                                      Text(
                                         'على اصناف مختارة',
-                                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
+                                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: w/23),
                                       ),
                                       Text(
                                         '₪ ${snapshot.data!.docs[index]['Offar']}',
-                                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.pinkAccent, fontSize: 25),
+                                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.pinkAccent, fontSize: w/20),
                                       ),
-                                      const Text(
+                                      Text(
                                         'خصومات بقيمة',
-                                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+                                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: w/23),
                                       ),
                                     ],
                                   ),
@@ -482,33 +482,33 @@ class _RestaurantListState extends State<RestaurantList> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              const Row(
+                                               Row(
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
-                                                  Icon(Icons.timelapse, color: Colors.grey, size: 27),
+                                                  Icon(Icons.timelapse, color: Colors.grey, size: w/18),
                                                   Text(
                                                     ' ${45}وقت التوصيل',
-                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/24),
                                                   )
                                                 ],
                                               ),
-                                              const Row(
+                                               Row(
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
-                                                  Icon(Icons.delivery_dining, color: Colors.grey, size: 27),
+                                                  Icon(Icons.delivery_dining, color: Colors.grey, size: w/18),
                                                   Text(
-                                                    '${4.5} ₪',
-                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                                    '${snapshot.data!.docs[index]['Offar']} ₪',
+                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/24),
                                                   ),
                                                 ],
                                               ),
                                               Row(
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
-                                                  const Icon(Icons.location_on, color: Colors.grey, size: 27),
+                                                   Icon(Icons.location_on, color: Colors.grey, size: w/18),
                                                   Text(
                                                     City[snapshot.data!.docs[index]['Location'] - 1],
-                                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/24),
                                                   ),
                                                 ],
                                               ),
@@ -524,23 +524,14 @@ class _RestaurantListState extends State<RestaurantList> {
                                         children: [
                                           Text(
                                             snapshot.data!.docs[index]['Name'],
-                                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/24),
                                           ),
                                           Text(
                                             Tybe[snapshot.data!.docs[index]['TybeMarket']],
-                                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: w/24),
                                           ),
                                           //Location
-                                          const Row(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Icon(Icons.star, color: Color(0xFFFFD700), size: 27),
-                                              Text(
-                                                '4.5',
-                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                                              )
-                                            ],
-                                          ),
+                                          RatingWidget(idMarket: snapshot.data!.docs[index]['Uid']),
                                         ],
                                       ),
                                     ),

@@ -13,6 +13,7 @@ class Assets {
   static const String img2 = 'assets/Img/2.png';
   static const String img3 = 'assets/Img/3.png';
   static const String imgFull logo = 'assets/Img/full logo.png';
+  static const String imgHooosadasda = 'assets/Img/hooosadasda.png';
   static const String imgIcons8Burger100 = 'assets/Img/icons8-burger-100.png';
   static const String imgLogowelcome = 'assets/Img/logowelcome.png';
   static const String imgPngegg = 'assets/Img/pngegg.png';
@@ -44,6 +45,12 @@ class Assets {
   static const String productsPngtreeCleanAndSimplePottedGarlicKitchenSeasoningOnWhiteBackgroundImage498388 = 'assets/test/products/pngtree-clean-and-simple-potted-garlic-kitchen-seasoning-on-white-background-image_498388.jpg';
   static const String productsPngtreeWhiteCuauliflowerIndianBestVegitablePngImage2550066 = 'assets/test/products/pngtree-white-cuauliflower-indian-best-vegitable-png-image_2550066.jpg';
   static const String productsStockPhotoFreshEggplantOnWhiteBackground36907 = 'assets/test/products/stock-photo-fresh-eggplant-on-white-background-36907.jpg';
+  static const String sections1 = 'assets/Sections/1.png';
+  static const String sections2 = 'assets/Sections/2.png';
+  static const String sections3 = 'assets/Sections/3.png';
+  static const String sections4 = 'assets/Sections/4.png';
+  static const String sections5 = 'assets/Sections/5.png';
+  static const String sections6 = 'assets/Sections/6.png';
   static const String test1 = 'assets/test/1.jpg';
   static const String test2 = 'assets/test/2.jpg';
   static const String test3 = 'assets/test/3.jpg';

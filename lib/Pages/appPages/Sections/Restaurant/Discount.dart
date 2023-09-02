@@ -3,7 +3,8 @@ import 'package:halaapp/Pages/appPages/Sections/Restaurant/PrudactRestaurant.dar
 
 class Discaount extends StatefulWidget {
   String UidAdmin;
-  Discaount({Key? key,required this.UidAdmin}) : super(key: key);
+  bool which_Page;
+  Discaount({Key? key,required this.UidAdmin,required this.which_Page}) : super(key: key);
 
   @override
   State<Discaount> createState() => _DiscaountState();
@@ -28,7 +29,7 @@ class _DiscaountState extends State<Discaount> {
       ),
       body: Container(
         margin: const EdgeInsets.all(15),
-        child:  GridViewRust(Prudact:const {},Swich: false,Uid:widget.UidAdmin ),
+        child:  GridViewRust(Prudact:const {},Swich: false,Uid:widget.UidAdmin,WhichPage: widget.which_Page),
       )
     );
   }

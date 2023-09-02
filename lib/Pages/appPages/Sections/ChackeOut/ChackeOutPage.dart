@@ -55,9 +55,9 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
   }
   @override
   final CodeDiscount=TextEditingController();
-  int? Discount;
+  double? Discount;
   int?DiscountNum;
-  int? _TotalPrise;
+  double? _TotalPrise;
   int? IdOrdar;
   int ordarid(){
    return IdOrdar= Random().nextInt(1000000);
@@ -71,10 +71,8 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
     int IdOrdar=ordarid();
     int OrdarId1=IdOrdar;
     Future<void> sendListToFirestore() async {
-      int calculateTotalPrice() {
-        // قم بحساب السعر الإجمالي الخاص بك هنا
-        // قد تحتاج إلى الوصول إلى قائمة العناصر وحساب السعر الإجمالي بناءً على ذلك
-        int totalPrice = _TotalPrise!;
+      double calculateTotalPrice() {
+        double totalPrice = _TotalPrise!;
         for (var item in Provaider.listitem()) {
           totalPrice = _TotalPrise!;
         }
@@ -97,6 +95,11 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
           'TybePrudact':item.TybePrudact,
           'IdUser':FirebaseAuth.instance.currentUser!.uid,
           'OpitionSelected':item.OpitionSelected,
+          'IdMarket':item.IdMarket,
+          'Discount':item.Discount,
+          'TybePrudact':item.TybePrudact,
+          'Count_Quantity':item.Count_Quantity,
+          'Count_requests':item.Count_requests,
         };
 
         formattedList.add(formattedItem);
@@ -111,8 +114,11 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
         'totalPrice': '${calculateTotalPrice()} ₪',
         'items': formattedList,
         'OrdarStates': 0,
-        'User':FirebaseAuth.instance.currentUser!.uid,
+        'User':DataUser!.Uid,
         'UidMarket':Provaider.xid1,
+        'DateTime':DateTime.now(),
+        'OrdarRate':0,
+        'NameUser':DataUser!.Name,
       };
 
       listItem
@@ -148,9 +154,6 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            //حبش 0
-            //1
-            ElevatedButton(onPressed: () {print(Provaider.listitem()[0].OpitionSelected);}, child: Text('test')),
             Container(
               margin: const EdgeInsets.all(16),
               height: 250,
@@ -243,12 +246,13 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
                 ],
               ),
             ),//Time
-            Transform.translate(
-                offset: const Offset(120, 0),
-                child: const Text(
-                  'طريقة الدفع',
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-                )),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'طريقة الدفع',
+                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+              ),
+            ),
             Container(
               margin: const EdgeInsets.all(16),
               height: 51,
@@ -271,15 +275,16 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
                 ),
               ),
             ), //Cash
-            Transform.translate(
-                offset: const Offset(120, 0),
-                child: const Text(
-                  'وفر على طلبك',
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-                )),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'وفر على طلبك',
+                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+              ),
+            ),
             Container(
               margin: const EdgeInsets.all(16),
-              height: 100,
+              height: w/4,
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey, width: 3),
                   borderRadius: BorderRadius.circular(15)),
@@ -294,16 +299,16 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
                               DiscauntData();
                             });
                           },
-                          child: const Text(
+                          child: Text(
                             'أرسال',
                             style: TextStyle(
                                 color: Colors.teal,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18),
+                                fontSize: w/25),
                           ))),
                   SizedBox(
-                      height: 100,
-                      width: 270,
+                      height: w/5,
+                      width: w/1.5,
                       child: TextField(
                         controller: CodeDiscount,
                         maxLength: 7,
@@ -318,12 +323,13 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
                 ],
               ),
             ), //CideDiscaunt
-            Transform.translate(
-                offset: const Offset(120, 0),
-                child: const Text(
-                  'ملخص الدفع',
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-                )),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'ملخص الدفع',
+                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+              ),
+            ),
             Container(
               margin: const EdgeInsets.all(16),
               child: Column(
