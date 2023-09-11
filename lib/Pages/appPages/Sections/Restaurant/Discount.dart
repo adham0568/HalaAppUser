@@ -29,7 +29,7 @@ class _DiscaountState extends State<Discaount> {
       ),
       body: Container(
         margin: const EdgeInsets.all(15),
-        child:  GridViewRust(Prudact:const {},Swich: false,Uid:widget.UidAdmin,WhichPage: widget.which_Page),
+        child:  GridViewRust(Prudact:const {},Swich:false,Uid:widget.UidAdmin,WhichPage: widget.which_Page),
       )
     );
   }

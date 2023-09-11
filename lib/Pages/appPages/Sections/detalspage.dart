@@ -26,7 +26,7 @@ bool discounts=false;
 class _DetalesState extends State<Detales> {
   @override
   void initState() {
-    widget.Prudact['Discount']>0?discounts=true:discounts=false;
+    widget.Prudact['Discount']*1.0>0?discounts=true:discounts=false;
     // TODO: implement initState
     super.initState();
   }
@@ -139,16 +139,16 @@ class _DetalesState extends State<Detales> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       discounts?
-                      DiscountWidget(Prise: widget.Prudact['Prise'], Discount: widget.Prudact['Discount'], Size1: 20)
+                      DiscountWidget(Prise: widget.Prudact['Prise']*1.0, Discount: widget.Prudact['Discount']*1.0, Size1: 20)
                           :
                       const Text(''),
                       Row(mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('₪${widget.Prudact['Prise']}',style: const TextStyle(fontSize: 18,color: Colors.grey,fontWeight: FontWeight.w300,
+                        Text('₪${widget.Prudact['Prise']*1.0}',style: const TextStyle(fontSize: 18,color: Colors.grey,fontWeight: FontWeight.w300,
                             decoration: TextDecoration.lineThrough
                         ),),
                         SizedBox(width: 15,),
-                        Text('₪${widget.Prudact['Prise']-widget.Prudact['Discount']} ',style: const TextStyle(fontSize: 35,color: Colors.pink,fontWeight: FontWeight.w500),)
+                        Text('₪${widget.Prudact['Prise']*1.0-widget.Prudact['Discount']*1.0} ',style: const TextStyle(fontSize: 35,color: Colors.pink,fontWeight: FontWeight.w500),)
                       ],
                       )
                     ],
@@ -157,7 +157,7 @@ class _DetalesState extends State<Detales> {
               ),
             )
                 :
-            Text('₪ ${widget.Prudact['Prise']}  السعر',style: const TextStyle(fontSize: 25,color: Colors.red,fontWeight: FontWeight.bold),),
+            Text('₪ ${widget.Prudact['Prise']*1.0}  السعر',style: const TextStyle(fontSize: 25,color: Colors.red,fontWeight: FontWeight.bold),),
             const SizedBox(height: 20,),
             Align(
                 alignment: Alignment.center,

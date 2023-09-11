@@ -20,7 +20,7 @@ class ChackeOotPage extends StatefulWidget {
   State<ChackeOotPage> createState() => _ChackeOotPageState();
 }
 class _ChackeOotPageState extends State<ChackeOotPage> {
-  Future<void> DiscountEditing({required int DiscountNum}) async {
+  Future<void> DiscountEditing({required double DiscountNum}) async {
     print(DiscountNum);
     CollectionReference listItem = FirebaseFirestore.instance.collection('Discount');
 
@@ -42,8 +42,8 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
     print('done');
     setState(() {
       if(snapshot.data()!['DiscountNum']==0){Discount=0;showSnackBar(context: context, text: 'الكود منتهي', color1: Colors.red);}
-      else{Discount=snapshot.data()!['DiscountValue'];}
-      DiscountNum=snapshot.data()!['DiscountNum'];
+      else{Discount=snapshot.data()!['DiscountValue']*1.0;}
+      DiscountNum=snapshot.data()!['DiscountNum']*1.0;
     });
     print(DiscountNum);
     }
@@ -56,7 +56,7 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
   @override
   final CodeDiscount=TextEditingController();
   double? Discount;
-  int?DiscountNum;
+  double?DiscountNum;
   double? _TotalPrise;
   int? IdOrdar;
   int ordarid(){

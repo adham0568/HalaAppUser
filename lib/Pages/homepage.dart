@@ -20,7 +20,7 @@ import '../models/snack.dart';
 import '../provider/CartProvider.dart';
 import '../provider/TotalPrudact.dart';
 import 'appPages/Cart/CartPage.dart';
-import 'appPages/Sections/Hala/SuperMarket.dart';
+import 'appPages/Sections/Hala/MarketPage.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -32,7 +32,7 @@ String addName1='0';
 String addName='0';
 class _HomePageState extends State<HomePage> {
 
-  bool? whichPage;
+  int? whichPage;
   String? Name;
   Map<String, dynamic> ? dataUser;
   static Map<String, dynamic> Data = {};
@@ -95,7 +95,7 @@ bool DataGett1=false;
                               if (snapshot.connectionState ==
                                   ConnectionState.done) {
                                 Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-                                data['TybePrudact']==0?whichPage=true:whichPage=false;
+                                data['TybePrudact']==0?whichPage=1:whichPage=0;
                                 data['TybePrudact']==0?Name='منتج':Name='مطعم';
                                 return  Stack(
                                   children: [
@@ -112,7 +112,9 @@ bool DataGett1=false;
                                             offset: Offset(w/2.8,w/7),
                                             child: InkWell(
                                               onTap: () {
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(whichPage: whichPage!, Name:Name!, NamePrudact: data['PrudactName']),));
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(
+                                                    Product: [],
+                                                   whichPage: whichPage!, Name:Name!, NamePrudact: data['PrudactName']),));
                                               },
                                               child: Container(
                                                 height: w/11,
@@ -210,7 +212,7 @@ bool DataGett1=false;
                                 ),
                                 InkWell(
                                   onTap: (){
-                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const SuperMarket()));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>marketPage(DataRestaurnat:{},whichPage: 0,idAdmin: 'C1zSXr7C9DW3MHN9tsbBiNRSu3g2',)));
                                   },
                                   child: Container(
                                     width: w/3.5,
@@ -421,11 +423,11 @@ bool DataGett1=false;
                           child: Text('عروض',style: TextStyle(fontWeight: FontWeight.bold,
                               fontSize: 25),),
                         ),
-                        Center(
+                        /*Center(
                           child: Container(
                               child:ImageAnimation(DocumantName:'HomePageAdd2')
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                     const SizedBox(
@@ -438,11 +440,11 @@ bool DataGett1=false;
                           child: Text('جديد',style: TextStyle(fontWeight: FontWeight.bold,
                               fontSize: 25),),
                         ),
-                        Center(
+                        /*Center(
                           child: Container(
                               child:ImageAnimation(DocumantName:'HomePage')
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                     const SizedBox(height: 47,),

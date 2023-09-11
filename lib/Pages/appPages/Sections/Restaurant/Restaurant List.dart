@@ -8,6 +8,7 @@ import 'package:halaapp/Pages/appPages/Sections/SearchPage.dart';
 import 'package:halaapp/models/snack.dart';
 import 'package:provider/provider.dart';
 import '../../../../provider/DataUser.dart';
+import '../Hala/MarketPage.dart';
 
 class RestaurantList extends StatefulWidget {
   bool Which;
@@ -365,7 +366,9 @@ class _RestaurantListState extends State<RestaurantList> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(Name: 'مطاعم',whichPage: false,NamePrudact: ''),));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(
+                              Product: [],
+                              Name: 'مطاعم',whichPage: 0,NamePrudact: '',),));
                         },
                         child: Container(
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color:Colors.black26,),
@@ -403,10 +406,9 @@ class _RestaurantListState extends State<RestaurantList> {
                         verticalOffset: -850,
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ResturntCollection(ResturntData: snapshot.data!.docs[index].data()! as Map<String, dynamic>,
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => marketPage(DataRestaurnat: snapshot.data!.docs[index].data()! as Map<String, dynamic>,
+                              idAdmin: '',
+                              whichPage: 1,
                                 ),
                               ),
                             );

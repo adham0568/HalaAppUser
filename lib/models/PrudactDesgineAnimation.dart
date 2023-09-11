@@ -8,143 +8,146 @@ import '../Pages/appPages/Sections/detalspage.dart';
 import 'DiscountDesgin.dart';
 import 'add.dart';
 
-class GridView2 extends StatelessWidget {
-  String Prudact;
-  GridView2({super.key, required this.Prudact});
+class GridView2 extends StatefulWidget {
+  String idMainCollection;
+  List productData;
+  GridView2({Key? key,required this.productData,required this.idMainCollection,}) : super(key: key);
+
+  @override
+  State<GridView2> createState() => _GridView2State();
+}
+
+class _GridView2State extends State<GridView2> {
+  List productMarket=[];
+  sortProduct(){
+    for(int i=0;i<widget.productData.length;i++){
+      if(widget.productData[i]['IdMainCollection']==widget.idMainCollection){
+        productMarket.add(widget.productData[i]);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    productMarket.clear();
+    setState(() {
+      sortProduct();
+    });
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     int columnCount = 3;
-    return FutureBuilder(
-      future: FirebaseFirestore.instance
-          .collection('Prudacts')
-          .where('IdMainCollection', isEqualTo:Prudact)
-          .get(),
-      builder:
-          (BuildContext context, AsyncSnapshot snapshot) {
-
-        if (snapshot.hasError) {
-          return const Text("Something went wrong");
-        }
-        if (snapshot.connectionState == ConnectionState.done) {
-
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 10,),
-                SizedBox(
-                  child:AnimationLimiter(
-                    child: GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.all(w / 60),
-                      crossAxisCount: 2,
-                      childAspectRatio: h*4/w*0.1,
-                      mainAxisSpacing: 10,
-                      children: List.generate(
-                        snapshot.data!.docs.length, (int index) {
-                        return AnimationConfiguration.staggeredGrid(
-                            position: index,
-                            duration: const Duration(milliseconds: 500),
-                            columnCount: 2,
-                            child: ScaleAnimation(
-                              duration: const Duration(milliseconds: 1000),
-                              curve: Curves.fastLinearToSlowEaseIn,
-                              scale: 1.5,
-                              child: FadeInAnimation(
-                                child: InkWell(
-                                  borderRadius:BorderRadius.circular(15),
-                                  onTap: (){
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Detales(
-                                              Prudact:snapshot.data!.docs[index].data()!.map((key, value) => MapEntry(key, value)),
-                                            )));
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.only(left: 10,right: 10),
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),
-                                        border: Border.all(color: Colors.teal,width: 3)),
-                                    child: Column(
-                                      children: [
-                                         Stack(
-                                          children: [
-                                            snapshot.data!.docs[index]['Discount']>0?
-                                            Container(
-                                                width: w/5.8,
-                                                child: DiscountWidget(Prise:snapshot.data!.docs[index]['Prise'], Discount:snapshot.data!.docs[index]['Discount'] , Size1: 10))
-                                                :
-                                            const Text(''),
-                                            Container(
-                                              margin: EdgeInsets.only(top: w/16),
-                                              child: Center(
-                                                child: CachedNetworkImage(
-                                                  imageUrl: snapshot.data!.docs[index]['ImageUrl'],
-                                                  placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
-                                                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                                                  imageBuilder: (context, imageProvider) => Container(
-                                                    height: w/5,
-                                                    width: w/5,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(12),
-                                                      image: DecorationImage(
-                                                        image: imageProvider,
-                                                        fit: BoxFit.contain,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 10,),
+          SizedBox(
+            child:AnimationLimiter(
+              child: GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.all(w / 60),
+                crossAxisCount: 2,
+                childAspectRatio: h*4/w*0.1,
+                mainAxisSpacing: 10,
+                children: List.generate(
+                  productMarket.length, (int index) {
+                  return AnimationConfiguration.staggeredGrid(
+                    position: index,
+                    duration: const Duration(milliseconds: 500),
+                    columnCount: 2,
+                    child: ScaleAnimation(
+                      duration: const Duration(milliseconds: 1000),
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      scale: 1.5,
+                      child: FadeInAnimation(
+                        child: InkWell(
+                          borderRadius:BorderRadius.circular(15),
+                          onTap: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Detales(
+                                        Prudact:productMarket[index]
+                                    )));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 10,right: 10),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),
+                                border: Border.all(color: Colors.teal,width: 3)),
+                            child: Column(
+                              children: [
+                                Stack(
+                                  children: [
+                                    productMarket[index]['Discount']*1.0>0?
+                                    Container(
+                                        width: w/5.8,
+                                        child: DiscountWidget(Prise:productMarket[index]['Prise']*1.0, Discount:productMarket[index]['Discount']*1.0 , Size1: 10))
+                                        :
+                                    const Text(''),
+                                    Container(
+                                      margin: EdgeInsets.only(top: w/16),
+                                      child: Center(
+                                        child: CachedNetworkImage(
+                                          imageUrl: productMarket[index]['ImageUrl'],
+                                          placeholder: (context, url) => const CircularProgressIndicator(color: Colors.red),
+                                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                                          imageBuilder: (context, imageProvider) => Container(
+                                            height: w/5,
+                                            width: w/5,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(12),
+                                              image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.contain,
                                               ),
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                        Text(snapshot.data!.docs[index]['Name'],style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                                        const SizedBox(height: 5,),
-                                        snapshot.data!.docs[index]['Discount']>0?
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            RichText(
-                                              text: TextSpan(
-                                                text:' ₪''${snapshot.data!.docs[index]['Prise']-snapshot.data!.docs[index]['Discount']} / ',
-                                                style: TextStyle(fontSize: w/18,color: Colors.red,fontWeight: FontWeight.bold,), // يمكنك استخدام أسلوب النص الافتراضي
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                    text: '${snapshot.data!.docs[index]['Prise']} ₪',
-                                                    style: TextStyle(decoration: TextDecoration.lineThrough,fontSize: w/18,color: Colors.grey),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                            //Text('${snapshot.data!.docs[index]['Prise']-snapshot.data!.docs[index]['Discount']}'+' ₪',style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 18),),
-                                          ],
-                                        )
-                                            :
-                                        Text('${snapshot.data!.docs[index]['Prise']} ₪',style: const TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 18),),
-                                        Container(decoration: BoxDecoration(color:Colors.black54,borderRadius: BorderRadius.circular(5)),
-                                            child: AddToCartWidget(Prudact:snapshot.data.docs[index].data(),ColorIcon: Colors.teal,SizeIcon: 30,)),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ),
+                                Text(productMarket[index]['Name'],style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                                const SizedBox(height: 5,),
+                                productMarket[index]['Discount']*1.0>0?
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        text:' ₪''${productMarket[index]['Prise']*1.0-productMarket[index]['Discount']*1.0} / ',
+                                        style: TextStyle(fontSize: w/18,color: Colors.red,fontWeight: FontWeight.bold,), // يمكنك استخدام أسلوب النص الافتراضي
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: '${productMarket[index]['Prise']*1.0} ₪',
+                                            style: TextStyle(decoration: TextDecoration.lineThrough,fontSize: w/18,color: Colors.grey),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                    //Text('${data[index]['Prise']*1.0-data[index]['Discount']*1.0}'+' ₪',style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 18),),
+                                  ],
+                                )
+                                    :
+                                Text('${productMarket[index]['Prise']*1.0} ₪',style: const TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 18),),
+                                Container(decoration: BoxDecoration(color:Colors.black54,borderRadius: BorderRadius.circular(5)),
+                                    child: AddToCartWidget(Prudact:productMarket[index],ColorIcon: Colors.teal,SizeIcon: 30,)),
+                              ],
                             ),
-                          );
-                        },
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  );
+                },
                 ),
-              ],
+              ),
             ),
-          );
-        }
-
-        return const Text("loading");
-      },
+          ),
+        ],
+      ),
     );
+
   }
 }
 

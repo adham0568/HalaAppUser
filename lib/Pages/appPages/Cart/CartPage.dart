@@ -14,6 +14,8 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  int decimalPlaces = 1;
+
   SizeFix SizeQ=SizeFix();
   @override
   Widget build(BuildContext context) {
@@ -113,7 +115,7 @@ class _CartPageState extends State<CartPage> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  '${cartItems[index].Prise * Provaider.GetNumberByProducts(Provaider.listitem()[index])}' '₪',
+                                  '${(cartItems[index].Prise * Provaider.GetNumberByProducts(Provaider.listitem()[index])).toStringAsFixed(decimalPlaces)}' '₪',
                                   style: const TextStyle(
                                       fontSize: 20,
                                       color: Colors.pink,

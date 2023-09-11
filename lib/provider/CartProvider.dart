@@ -91,7 +91,17 @@ class CartProvider with ChangeNotifier {
       double _prise=Products[i].Prise;
       Prise+=_prise;
     }
-    return Prise;
+
+// تحديد عدد الأرقام العشرية التي تريد عرضها (في هذه الحالة، 1)
+    int decimalPlaces = 1;
+
+// تحويل الرقم إلى نص مع تقليل عدد الأرقام العشرية
+    String formattedNumber = Prise.toStringAsFixed(decimalPlaces);
+
+// تحويل النص المنسق إلى رقم مرة أخرى إذا كنت بحاجة إلى ذلك
+    double finalNumber = double.parse(formattedNumber);
+
+    return finalNumber;
   }
 }
 

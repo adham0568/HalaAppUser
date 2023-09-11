@@ -8,42 +8,18 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 
 class ImageAnimation extends StatefulWidget {
-  String DocumantName;
-  ImageAnimation({required this.DocumantName,Key? key}) : super(key: key);
+  List AddList=[];
+  List Product;
+  ImageAnimation({required this.AddList,required this.Product,Key? key}) : super(key: key);
 
   @override
   State<ImageAnimation> createState() => _ImageAnimationState();
 }
 class _ImageAnimationState extends State<ImageAnimation> {
-  List? images;
-  bool waiting=false;
   int _currentIndex = 0;
-  Future<Map<String, dynamic>?> GetDataFromFireBase() async {
-    try {
-      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-      await FirebaseFirestore.instance.collection('Pohto add').doc(widget.DocumantName).get();
-
-      if (documentSnapshot.exists) {
-        Map<String, dynamic> data = documentSnapshot.data()!;
-        setState(() {
-          images = data['Images']; // قم بتعيين القائمة images بقيمة images المسترجعة من Firestore
-          waiting = true;
-        });
-        return data;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      print('Error: $e');
-      return null;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    GetDataFromFireBase();
-    return waiting?
-    Column(
+    return Column(
       children: [
         Center(
           child: Container(
@@ -59,7 +35,7 @@ class _ImageAnimationState extends State<ImageAnimation> {
                       });
                     },
                   ),
-                  items: images!.map((imagePath) {
+                  items: widget.AddList.map((imagePath) {
                     return Builder(
                       builder: (BuildContext context) {
                         return AspectRatio(
@@ -67,7 +43,7 @@ class _ImageAnimationState extends State<ImageAnimation> {
                           child: GestureDetector(
                             onTap: (){
                               Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                  SearchPage(whichPage: true, Name: 'Name',NamePrudact:imagePath['PrudactName'] ),));
+                                  SearchPage(Product: widget.Product,whichPage: 2, Name:widget.AddList[_currentIndex]['ProductName'],NamePrudact:widget.AddList[_currentIndex]['ProductName']),));
                             },
                             child: Container(
                               margin: const EdgeInsets.only(left: 5, right: 5),
@@ -90,7 +66,7 @@ class _ImageAnimationState extends State<ImageAnimation> {
                 ),
                 AnimatedSmoothIndicator(
                   activeIndex: _currentIndex,
-                  count:images!.length,
+                  count:widget.AddList.length,
                   effect: WormEffect(
                     type: WormType.thin,
                     spacing: 8.0,
@@ -108,8 +84,6 @@ class _ImageAnimationState extends State<ImageAnimation> {
           ),
         ),
       ],
-    )
-        :
-    Container(color: Colors.white,child: const Center(child: CircularProgressIndicator(color: Colors.green,backgroundColor: Colors.red,),),);
+    );
   }
 }

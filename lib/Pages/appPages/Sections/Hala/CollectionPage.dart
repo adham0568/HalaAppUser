@@ -7,8 +7,8 @@ import 'package:halaapp/Pages/appPages/Sections/Hala/PrudactHala.dart';
 class CollectionPage extends StatefulWidget {
   String DataFromCollection;
   List<DocumentSnapshot> documents;
-
-  CollectionPage({Key? key,required this.DataFromCollection,required this.documents}) : super(key: key);
+  List prudact;
+  CollectionPage({required this.prudact,Key? key,required this.DataFromCollection,required this.documents}) : super(key: key);
 
   @override
   State<CollectionPage> createState() => _CollectionPageState();
@@ -104,8 +104,8 @@ class _CollectionPageState extends State<CollectionPage> {
 
                     FutureBuilder(
                       future: FirebaseFirestore.instance
-                          .collection('mainCollection')
-                          .where('IdCollection', isEqualTo:MainCollectionId)
+                          .collection('Collection')
+                          .doc(MainCollectionId).collection('mainCollection')
                           .get(),
 
                       builder:
@@ -132,7 +132,7 @@ class _CollectionPageState extends State<CollectionPage> {
                                          onTap: (){
                                            DocumentSnapshot documentSnapshot = snapshot.data!.docs[index];
                                            Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
-                                           Navigator.push(context, MaterialPageRoute(builder: (context)=>PrudactPageForHalaMart(DataFromCollection:data,documents: snapshot.data!.docs,)));
+                                           Navigator.push(context, MaterialPageRoute(builder: (context)=>PrudactPageForHalaMart(whichPage: 0,IdMainCollection:data['IdPrudactMainCollection'],documents: snapshot.data!.docs,productData: widget.prudact,)));
                                          },
                                          child: Container(
                                            margin: const EdgeInsets.all(5),
