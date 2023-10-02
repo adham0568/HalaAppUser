@@ -265,41 +265,6 @@ class _LogInState extends State<LogIn> {
                   ),
                 ),
               ),
-             /* const Text('OR You Can SingIn With Gmail & Phone'),
-              const SizedBox(height: 20,),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    borderRadius: BorderRadius.circular(55),
-                    splashColor:  const Color.fromRGBO(0, 175, 162, 10),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const PhoneNumber()));
-                    },
-                    child: Container(
-                      height: 60,
-                      width: 60,
-                      decoration:  const BoxDecoration(color: Colors.black12, shape: BoxShape.circle),
-                      child: Lottie.asset('assets/lottie/phone.json'),
-                    ),
-                  ),
-                  const SizedBox(width: 20,),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(55),
-                    splashColor: const Color.fromRGBO(0, 175, 162, 10),
-                    onTap: () async {
-                      await GoogleProviderSignIn.googlelogin(context: context);
-                    },
-                    child: Container(
-                      height: 60,
-                      width: 60,
-                      decoration: const BoxDecoration(color: Colors.black12, shape: BoxShape.circle),
-                      child: Lottie.asset('assets/lottie/google.json'),
-                    ),
-                  ),
-                ],
-              ),*/
             ],
           ),
         ),

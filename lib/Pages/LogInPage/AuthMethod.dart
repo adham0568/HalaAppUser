@@ -20,6 +20,7 @@ class AuthMethod {
       required String Dis,
       required BuildContext context,
       required String PhoneNumber,
+      required String Token,
       }) async {
     try {
       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -41,6 +42,7 @@ class AuthMethod {
         City: City,
         Dis:Dis,
         PhoneNumber: PhoneNumber,
+        Token: Token,
       );
       userdata
           .doc(credential.user!.uid)

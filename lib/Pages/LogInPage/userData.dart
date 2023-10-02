@@ -12,6 +12,7 @@ class UserData{
   int City;
   String Dis;
   String PhoneNumber;
+  String Token;
 
 
   UserData(
@@ -27,6 +28,7 @@ class UserData{
         required this.City,
         required this.Dis,
         required this.PhoneNumber,
+        required this.Token,
       });
 
   //convert data frome UserData to  Map<String,Object>
@@ -45,6 +47,7 @@ class UserData{
       'City':City,
       'Dis':Dis,
       'PhoneNumber':PhoneNumber,
+      'Token':Token,
     };
   }
 
@@ -61,7 +64,8 @@ class UserData{
       Long: snapshot['Long'],
       City: snapshot['City'],
       Dis:snapshot['Dis'],
-      PhoneNumber:snapshot['PhoneNumber']
+      PhoneNumber:snapshot['PhoneNumber'],
+      Token:snapshot['Token']
     );
   }
 

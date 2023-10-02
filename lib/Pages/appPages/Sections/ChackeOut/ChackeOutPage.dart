@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:halaapp/Pages/AccountPages/AccountPage.dart';
 import 'package:halaapp/Pages/LogInPage/AddLocation.dart';
 import 'package:halaapp/Pages/appPages/Sections/ChackeOut/DoneOrdar.dart';
+import 'package:halaapp/models/Notification.dart';
 import 'package:halaapp/models/snack.dart';
 import 'package:provider/provider.dart';
 
@@ -110,7 +111,9 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
         Provaider. PirseCalculating()>100?_TotalPrise= Provaider. PirseCalculating() + 0 - Discount!:_TotalPrise= Provaider. PirseCalculating() + 7 - Discount!;
       });
       Map<String, dynamic> orderData = {
-        'orderID': IdOrdar, // قم بتعيين الـ ID الخاص بالطلب هنا
+        'orderID': IdOrdar,
+        'UserLat':DataUser!.Lat,
+        'UserLng':DataUser!.Long,
         'totalPrice': '${calculateTotalPrice()} ₪',
         'items': formattedList,
         'OrdarStates': 0,
@@ -417,6 +420,7 @@ class _ChackeOotPageState extends State<ChackeOotPage> {
             ),
             InkWell(
               onTap: () async {
+                Notificasion().sendNotificationUsingServerToken(title: "Admin Hala", body: 'لديك طلب جديد', Token: Provaider.token);
                await sendListToFirestore();
                 setState(() {
                   Provaider. PirseCalculating()>100?_TotalPrise= Provaider. PirseCalculating() + 0 - Discount! :_TotalPrise= Provaider. PirseCalculating() + 7 - Discount!;

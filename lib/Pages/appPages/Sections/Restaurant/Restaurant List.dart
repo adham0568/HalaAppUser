@@ -7,6 +7,7 @@ import 'package:halaapp/Pages/appPages/Sections/Restaurant/ResturantCollection.d
 import 'package:halaapp/Pages/appPages/Sections/SearchPage.dart';
 import 'package:halaapp/models/snack.dart';
 import 'package:provider/provider.dart';
+import '../../../../provider/CartProvider.dart';
 import '../../../../provider/DataUser.dart';
 import '../Hala/MarketPage.dart';
 
@@ -56,6 +57,7 @@ class _RestaurantListState extends State<RestaurantList> {
   @override
   Widget build(BuildContext context) {
     final DataUser = Provider.of<Userdata>(context).getUser;
+    final Provaider = Provider.of<CartProvider>(context);
     double w = MediaQuery.of(context).size.width;
     double hight= MediaQuery.of(context).size.height;
     double wight= MediaQuery.of(context).size.width;
@@ -406,6 +408,8 @@ class _RestaurantListState extends State<RestaurantList> {
                         verticalOffset: -850,
                         child: InkWell(
                           onTap: () {
+                            Provaider.token=snapshot.data!.docs[index]['Token'];
+                            print(Provaider.token);
                             Navigator.push(context, MaterialPageRoute(builder: (context) => marketPage(DataRestaurnat: snapshot.data!.docs[index].data()! as Map<String, dynamic>,
                               idAdmin: '',
                               whichPage: 1,
