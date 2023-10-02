@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:halaapp/Pages/LogInPage/AddLocation.dart';
@@ -10,8 +11,6 @@ import 'package:halaapp/models/snack.dart';
 import '../../models/HIGHT.dart';
 
 class SingUP extends StatefulWidget {
-
-
   double Lat;
   double Long;
   bool LocationAdd;
@@ -38,9 +37,18 @@ bool singup=false;
 
 
 class _SingUPState extends State<SingUP> {
-
+  var fbm=FirebaseMessaging.instance;
   AuthMethod Auth=AuthMethod();
   bool Showpass=true;
+  String _token='';
+
+  @override
+  void initState() {
+    fbm.getToken().then((token){
+      _token=token!;
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     SizeFix Size=SizeFix();
@@ -272,6 +280,7 @@ class _SingUPState extends State<SingUP> {
                                                     context:context,
                                                     Dis:widget.Dis,
                                                     Lng:widget.Long,
+                                                    Token: _token,
                                                   );
                                  singupwating = true;
                                 singup=false;

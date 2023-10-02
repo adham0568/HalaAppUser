@@ -4,6 +4,7 @@ import '../models/Item.dart';
 class CartProvider with ChangeNotifier {
   List<Item> Products = [];
   String xid1 = '000';
+  String token='00';
 
   final int _ItemsCount = 0;
   int NumOfPrudact=0;
